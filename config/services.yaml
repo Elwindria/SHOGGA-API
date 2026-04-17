@@ -6,7 +6,11 @@
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
-parameters:
+parameters:     
+    sellsy.client_id: '%env(SELLSY_CLIENT_ID)%'
+    sellsy.client_secret: '%env(SELLSY_CLIENT_SECRET)%'
+    sellsy.api_base_url: '%env(SELLSY_API_BASE_URL)%'
+    sellsy.auth_url: '%env(SELLSY_AUTH_URL)%'
 
 services:
     # default configuration for services in *this* file
@@ -21,3 +25,13 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Service\Sellsy\SellsyAuthService:
+        arguments:
+            $clientId: '%sellsy.client_id%'
+            $clientSecret: '%sellsy.client_secret%'
+            $authUrl: '%sellsy.auth_url%'
+
+    App\Service\Sellsy\SellsyClient:
+        arguments:
+            $apiBaseUrl: '%sellsy.api_base_url%'
