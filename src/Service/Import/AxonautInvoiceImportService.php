@@ -3,7 +3,6 @@
 namespace App\Service\Import;
 
 use App\Factory\Import\AxonautInvoiceDtoFactory;
-use App\Service\Import\CompanyMappingResolver;
 use App\Mapper\Import\AxonautInvoiceToSellsyPayloadMapper;
 use App\Service\Sellsy\SellsyClient;
 
@@ -15,6 +14,7 @@ final class AxonautInvoiceImportService
         private readonly AxonautInvoiceToSellsyPayloadMapper $mapper,
         private readonly SellsyClient $sellsyClient,
         private readonly CompanyMappingResolver $companyMappingResolver,
+        private readonly TaxResolver $taxResolver,
     ) {
     }
 
@@ -45,10 +45,13 @@ final class AxonautInvoiceImportService
                 ));
             }
 
+            $taxRate = $this->computeTaxRate($dto->amountExclTax, $dto->taxAmount);
+            $sellsyTaxId = $this->taxResolver->resolveFromRate($taxRate);
+
             $payload = $this->mapper->map(
                 $dto,
                 sellsyCompanyId: $sellsyCompanyId,
-                sellsyTaxId: 1,
+                sellsyTaxId: $sellsyTaxId,
             );
 
             $this->sellsyClient->createInvoice($payload);
@@ -57,5 +60,32 @@ final class AxonautInvoiceImportService
         }
 
         return $count;
+    }
+
+    private function computeTaxRate(?string $amountExclTax, ?string $taxAmount): float
+    {
+        $ht = $this->toFloat($amountExclTax);
+        $tva = $this->toFloat($taxAmount);
+
+        if ($ht === null || $tva === null || $ht <= 0) {
+            throw new \RuntimeException('Impossible de calculer le taux de TVA.');
+        }
+
+        return round(($tva / $ht) * 100, 2);
+    }
+
+    private function toFloat(?string $value): ?float
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        $normalized = str_replace([' ', ','], ['', '.'], trim($value));
+
+        if ($normalized === '' || !is_numeric($normalized)) {
+            return null;
+        }
+
+        return (float) $normalized;
     }
 }

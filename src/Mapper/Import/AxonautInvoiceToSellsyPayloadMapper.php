@@ -147,16 +147,4 @@ final class AxonautInvoiceToSellsyPayloadMapper
             ],
         ];
     }
-
-    private function computeTaxRate(?string $amountExclTax, ?string $taxAmount): float
-    {
-        $ht = $this->toFloat($amountExclTax);
-        $tva = $this->toFloat($taxAmount);
-
-        if ($ht === null || $tva === null || $ht <= 0) {
-            throw new \RuntimeException('Impossible de calculer le taux de TVA.');
-        }
-
-        return round(($tva / $ht) * 100, 2);
-    }
 }
