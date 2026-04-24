@@ -2,7 +2,7 @@
 
 namespace App\Mapper\Import;
 
-use App\Dto\Import\NormalizedInvoiceLineDto;
+use App\DTO\Import\NormalizedInvoiceLineDto;
 use App\Service\Sellsy\SellsyTaxMappingResolver;
 
 final class SellsyV1PayloadMapper

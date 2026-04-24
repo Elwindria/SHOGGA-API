@@ -2,7 +2,7 @@
 
 namespace App\Factory\Import;
 
-use App\Dto\Import\NormalizedInvoiceLineDto;
+use App\DTO\Import\NormalizedInvoiceLineDto;
 
 final class NormalizedInvoiceLineDtoFactory
 {

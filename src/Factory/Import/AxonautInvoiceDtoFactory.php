@@ -2,7 +2,7 @@
 
 namespace App\Factory\Import;
 
-use App\Dto\Import\AxonautInvoiceDto;
+use App\DTO\Import\AxonautInvoiceDto;
 
 final class AxonautInvoiceDtoFactory
 {
