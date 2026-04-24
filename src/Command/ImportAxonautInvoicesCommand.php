@@ -2,7 +2,8 @@
 
 namespace App\Command;
 
-use App\Service\Import\AxonautInvoiceImportService;
+use App\Service\CsvReaderService;
+use App\Service\Import\SellsyV1InvoiceImportService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -12,12 +13,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'app:import-axonaut-invoices',
-    description: 'Importe les factures Axonaut (CSV) vers Sellsy',
+    description: 'Importe les factures Axonaut normalisées vers Sellsy V1',
 )]
 class ImportAxonautInvoicesCommand extends Command
 {
     public function __construct(
-        private readonly AxonautInvoiceImportService $importService,
+        private readonly CsvReaderService $csvReader,
+        private readonly SellsyV1InvoiceImportService $importService,
     ) {
         parent::__construct();
     }
@@ -28,12 +30,7 @@ class ImportAxonautInvoicesCommand extends Command
             ->addArgument(
                 'invoices',
                 InputArgument::REQUIRED,
-                'Nom du fichier CSV des factures dans var/temp/'
-            )
-            ->addArgument(
-                'mapping',
-                InputArgument::REQUIRED,
-                'Nom du fichier CSV de mapping sociétés dans var/temp/'
+                'Nom du fichier CSV normalisé des factures dans var/temp/'
             );
     }
 
@@ -42,10 +39,12 @@ class ImportAxonautInvoicesCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $invoiceFilename = (string) $input->getArgument('invoices');
-        $mappingFilename = (string) $input->getArgument('mapping');
+        $invoicePath = sprintf('%s/../var/temp/%s', __DIR__, $invoiceFilename);
 
         try {
-            $count = $this->importService->import($invoiceFilename, $mappingFilename);
+            $rows = $this->csvReader->read($invoicePath);
+
+            $count = $this->importService->import($rows);
 
             $io->success(sprintf('%d facture(s) importée(s) dans Sellsy.', $count));
 
