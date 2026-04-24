@@ -33,8 +33,13 @@ final class SellsyV1InvoiceImportService
             try {
                 $this->processInvoice($invoiceNumber, $lines);
                 $count++;
-            } catch (\Throwable) {
-                continue;
+            }catch (\Throwable $e) {
+                dump('❌ Erreur facture', $invoiceNumber);
+                dump(get_class($e));
+                dump($e->getMessage());
+                dump($e->getFile() . ':' . $e->getLine());
+
+                throw $e;
             }
         }
 

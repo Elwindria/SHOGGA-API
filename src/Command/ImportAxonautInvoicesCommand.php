@@ -53,7 +53,6 @@ class ImportAxonautInvoicesCommand extends Command
             return Command::SUCCESS;
         } catch (\Throwable $e) {
             $io->error($e->getMessage());
-
             return Command::FAILURE;
         }
     }
