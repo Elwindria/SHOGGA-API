@@ -31,8 +31,7 @@ services:
             $clientId: '%sellsy.client_id%'
             $clientSecret: '%sellsy.client_secret%'
             $authUrl: '%sellsy.auth_url%'
-            $baseUrl: '%env(SELLSY_API_V1_URL)%'
 
     App\Service\Sellsy\SellsyV1Client:
         arguments:
-            $apiBaseUrl: '%sellsy.api_base_url%'
+            $baseUrl: '%env(SELLSY_API_V1_URL)%'
