@@ -10,6 +10,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 #[AsCommand(
     name: 'app:import-axonaut-invoices',
@@ -20,6 +21,7 @@ class ImportAxonautInvoicesCommand extends Command
     public function __construct(
         private readonly CsvReaderService $csvReader,
         private readonly SellsyV1InvoiceImportService $importService,
+        private readonly KernelInterface $kernel,
     ) {
         parent::__construct();
     }
@@ -39,7 +41,7 @@ class ImportAxonautInvoicesCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $invoiceFilename = (string) $input->getArgument('invoices');
-        $invoicePath = sprintf('%s/../../var/temp/%s', __DIR__, $invoiceFilename);
+        $invoicePath = $this->kernel->getProjectDir() . '/var/temp/' . $invoiceFilename;
 
         try {
             $rows = $this->csvReader->read($invoicePath);
