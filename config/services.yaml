@@ -26,7 +26,7 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    App\Service\Sellsy\SellsyAuthService:
+    App\Service\Sellsy\SellsyTokenManager:
         arguments:
             $clientId: '%sellsy.client_id%'
             $clientSecret: '%sellsy.client_secret%'
