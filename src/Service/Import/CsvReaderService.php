@@ -24,10 +24,10 @@ class CsvReaderService
     /**
      * @return array<int, array<string, string|null>>
      */
-    public function read(string $path, string $delimiter = ';'): array
+    public function read(string $path): array
     {
         $file = new SplFileObject($path);
-        $file->setCsvControl($delimiter);
+        $file->setCsvControl(';', '"', '\\');
         $file->setFlags(
             SplFileObject::READ_CSV
             | SplFileObject::READ_AHEAD
