@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Service\CsvReaderService;
+use App\Service\Import\CsvReaderService;
 use App\Service\Import\SellsyV1InvoiceImportService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

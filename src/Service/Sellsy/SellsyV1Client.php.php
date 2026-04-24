@@ -6,11 +6,10 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class SellsyV1Client
 {
-    private const BASE_URI = 'https://apifeed.sellsy.com/0/';
-
     public function __construct(
         private HttpClientInterface $httpClient,
         private SellsyAuthService $authService,
+        private string $baseUrl,
     ) {
     }
 
@@ -23,7 +22,7 @@ final class SellsyV1Client
         $token = $this->authService->getAccessToken();
 
         // Selon la V1, on envoie généralement le JSON encodé dans un champ (ex: 'request')
-        $response = $this->httpClient->request('POST', self::BASE_URI, [
+        $response = $this->httpClient->request('POST', $this->baseUrl, [
             'headers' => [
                 'Authorization' => 'Bearer ' . $token,
                 'Accept' => 'application/json',
