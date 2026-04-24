@@ -8,7 +8,7 @@ final class SellsyV1Client
 {
     public function __construct(
         private HttpClientInterface $httpClient,
-        private SellsyAuthService $authService,
+        private readonly SellsyTokenManager $tokenManager,
         private string $baseUrl,
     ) {
     }
@@ -19,7 +19,7 @@ final class SellsyV1Client
      */
     public function call(array $payload): array
     {
-        $token = $this->authService->getAccessToken();
+        $token = $this->tokenManager->getAccessToken();
 
         // Selon la V1, on envoie généralement le JSON encodé dans un champ (ex: 'request')
         $response = $this->httpClient->request('POST', $this->baseUrl, [

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto\Import;
+namespace App\DTO\Import;
 
 final readonly class NormalizedInvoiceLineDto
 {
