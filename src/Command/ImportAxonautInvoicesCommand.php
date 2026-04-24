@@ -39,7 +39,7 @@ class ImportAxonautInvoicesCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $invoiceFilename = (string) $input->getArgument('invoices');
-        $invoicePath = sprintf('%s/../var/temp/%s', __DIR__, $invoiceFilename);
+        $invoicePath = sprintf('%s/../../var/temp/%s', __DIR__, $invoiceFilename);
 
         try {
             $rows = $this->csvReader->read($invoicePath);
