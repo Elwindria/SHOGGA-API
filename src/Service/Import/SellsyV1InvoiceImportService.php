@@ -6,6 +6,7 @@ use App\Factory\Import\NormalizedInvoiceLineDtoFactory;
 use App\Mapper\Import\SellsyV1PayloadMapper;
 use App\Service\Sellsy\SellsyV1Client;
 use App\Service\Import\CompanyMappingResolver;
+use Psr\Log\LoggerInterface;
 
 final class SellsyV1InvoiceImportService
 {
@@ -14,6 +15,7 @@ final class SellsyV1InvoiceImportService
         private SellsyV1PayloadMapper $mapper,
         private SellsyV1Client $client,
         private CompanyMappingResolver $companyResolver,
+        private LoggerInterface $logger,
     ) {
     }
 
@@ -31,8 +33,7 @@ final class SellsyV1InvoiceImportService
             try {
                 $this->processInvoice($invoiceNumber, $lines);
                 $count++;
-            } catch (\Throwable $e) {
-                dump('❌ Erreur facture', $invoiceNumber, $e->getMessage());
+            } catch (\Throwable) {
                 continue;
             }
         }
@@ -62,18 +63,35 @@ final class SellsyV1InvoiceImportService
     {
         $first = $lines[0];
 
-        // 🔥 Résolution client Sellsy
         $thirdId = $this->companyResolver->resolve(
             $first->customerName,
             $first->customerEmail
         );
 
-        // 🔥 Mapping payload V1
         $payload = $this->mapper->map($lines, $thirdId);
 
-        // 🔥 Appel API
-        $response = $this->client->call($payload);
+        $this->logger->info('Payload Sellsy V1 envoyé', [
+            'invoice_number' => $invoiceNumber,
+            'payload' => $payload,
+        ]);
 
-        dump('Facture envoyée', $invoiceNumber, $response);
+        try {
+            $response = $this->client->call($payload);
+
+            $this->logger->info('Réponse Sellsy V1 OK', [
+                'invoice_number' => $invoiceNumber,
+                'response' => $response,
+            ]);
+        } catch (\Throwable $e) {
+            $this->logger->error('Erreur Sellsy V1', [
+                'invoice_number' => $invoiceNumber,
+                'customer_name' => $first->customerName,
+                'customer_email' => $first->customerEmail,
+                'payload' => $payload,
+                'error' => $e->getMessage(),
+            ]);
+
+            throw $e;
+        }
     }
 }
