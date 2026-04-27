@@ -34,12 +34,11 @@ final class SellsyV1InvoiceImportService
                 $this->processInvoice($invoiceNumber, $lines);
                 $count++;
             }catch (\Throwable $e) {
-                dump('❌ Erreur facture', $invoiceNumber);
-                dump(get_class($e));
-                dump($e->getMessage());
-                dump($e->getFile() . ':' . $e->getLine());
-
-                throw $e;
+                $this->logger->error('Erreur pré-payload', [
+                    'invoice_number' => $invoiceNumber,
+                    'class' => $e,
+                    'message' => $e->getMessage(),
+                ]);
             }
         }
 
@@ -73,6 +72,12 @@ final class SellsyV1InvoiceImportService
             $first->customerEmail
         );
 
+
+
+        if ($thirdId === null) {
+            return;
+        }
+
         $payload = $this->mapper->map($lines, $thirdId);
 
         $this->logger->info('Payload Sellsy V1 envoyé', [
@@ -96,7 +101,7 @@ final class SellsyV1InvoiceImportService
                 'error' => $e->getMessage(),
             ]);
 
-            throw $e;
+            return;
         }
     }
 }
