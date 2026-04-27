@@ -58,7 +58,11 @@ class ImportAxonautInvoicesCommand extends Command
 
             $count = $this->importService->import($rows);
 
-            $io->success(sprintf('%d facture(s) importée(s) dans Sellsy.', $count));
+            $io->success(sprintf(
+                '%d validée(s), %d erreur(s)',
+                $count['Validé'],
+                $count['Erreur']
+            ));
 
             return Command::SUCCESS;
         } catch (\Throwable $e) {

@@ -22,32 +22,31 @@ final class SellsyV1InvoiceImportService
     /**
      * @param array<int, array<string, string|null>> $rows
      */
-    public function import(array $rows): int
+    public function import(array $rows): array
     {
         $dtos = $this->factory->fromRows($rows);
         $grouped = $this->groupByInvoice($dtos);
-
-        $count = 0;
-        $countError = 0;
+        $count = [
+            "Validé" => 0,
+            "Erreur" => 0,
+        ];
 
         foreach ($grouped as $invoiceNumber => $lines) {
             try {
-                $this->processInvoice($invoiceNumber, $lines);
-                $count++;
+                if ($this->processInvoice($invoiceNumber, $lines)) {
+                    $count["validé"]++;
+                } else {
+                    $count["Erreur"]++;
+                };
             }catch (\Throwable $e) {
-                $this->logger->error('Erreur pré-payload n°'.$countError, [
+                $this->logger->error('Erreur pré-payload', [
                     'Facture n°' => $invoiceNumber,
                     'message' => $e->getMessage(),
                 ]);
 
-                $countError++;
+                $count["Erreur"]++;
             }
         }
-
-        $this->logger->error("Nombre de factures réussi", [
-            'Réussi ' => $count,
-            'Erreur ' => $countError,
-        ]);
 
         return $count;
     }
@@ -70,7 +69,7 @@ final class SellsyV1InvoiceImportService
     /**
      * @param array<int, mixed> $lines
      */
-    private function processInvoice(string $invoiceNumber, array $lines): void
+    private function processInvoice(string $invoiceNumber, array $lines): bool
     {
         $first = $lines[0];
 
@@ -88,6 +87,8 @@ final class SellsyV1InvoiceImportService
                 'invoice_number' => $invoiceNumber,
                 'response' => $response,
             ]);
+
+            return true;
         } catch (\Throwable $e) {
             $this->logger->error('Erreur Sellsy V1', [
                 'invoice_number' => $invoiceNumber,
@@ -96,6 +97,8 @@ final class SellsyV1InvoiceImportService
                 'payload' => $payload,
                 'error' => $e->getMessage(),
             ]);
+
+            return false;
         }
     }
 }
