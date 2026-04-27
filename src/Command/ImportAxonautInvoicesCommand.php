@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Service\Import\CsvReaderService;
 use App\Service\Import\SellsyV1InvoiceImportService;
+use App\Service\Import\CompanyMappingResolver;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -22,6 +23,7 @@ class ImportAxonautInvoicesCommand extends Command
         private readonly CsvReaderService $csvReader,
         private readonly SellsyV1InvoiceImportService $importService,
         private readonly KernelInterface $kernel,
+        private readonly CompanyMappingResolver $mappingResolver,
     ) {
         parent::__construct();
     }
@@ -33,6 +35,11 @@ class ImportAxonautInvoicesCommand extends Command
                 'invoices',
                 InputArgument::REQUIRED,
                 'Nom du fichier CSV normalisé des factures dans var/temp/'
+            )
+            ->addArgument(
+                'mapping',
+                InputArgument::REQUIRED,
+                'Nom du fichier CSV de mapping dans var/temp/'
             );
     }
 
@@ -41,6 +48,9 @@ class ImportAxonautInvoicesCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $invoiceFilename = (string) $input->getArgument('invoices');
+        $mappingFilename = (string) $input->getArgument('mapping');
+
+        $this->mappingResolver->loadFromProjectTemp($mappingFilename);
         $invoicePath = $this->kernel->getProjectDir() . '/var/temp/' . $invoiceFilename;
 
         try {
