@@ -2,6 +2,8 @@
 
 namespace App\Service\Import;
 
+use App\Service\Normalizer\Normalizer;
+
 final class CompanyMappingResolver
 {
     /**
@@ -16,6 +18,7 @@ final class CompanyMappingResolver
 
     public function __construct(
         private readonly CsvReaderService $csvReaderService,
+        private Normalizer $normalizer,
     ) {
     }
 
@@ -33,11 +36,11 @@ final class CompanyMappingResolver
             }
 
             if ($email !== null) {
-                $this->mappingByEmail[$this->normalizeEmail($email)] = (int) $id;
+                $this->mappingByEmail[$this->normalizer->normalizeEmail($email)] = (int) $id;
             }
 
             if ($name !== null) {
-                $this->mappingByName[$this->normalizeName($name)] = (int) $id;
+                $this->mappingByName[$this->normalizer->normalizeName($name)] = (int) $id;
             }
         }
     }
@@ -46,7 +49,7 @@ final class CompanyMappingResolver
     {
         // 1. email (prioritaire)
         if ($email !== null) {
-            $normalizedEmail = $this->normalizeEmail($email);
+            $normalizedEmail = $this->normalizer->normalizeEmail($email);
 
             if (isset($this->mappingByEmail[$normalizedEmail])) {
                 return $this->mappingByEmail[$normalizedEmail];
@@ -55,7 +58,7 @@ final class CompanyMappingResolver
 
         // 2. fallback nom
         if ($name !== null) {
-            $normalizedName = $this->normalizeName($name);
+            $normalizedName = $this->normalizer->normalizeName($name);
 
             if (isset($this->mappingByName[$normalizedName])) {
                 return $this->mappingByName[$normalizedName];
@@ -63,18 +66,5 @@ final class CompanyMappingResolver
         }
 
         return null;
-    }
-
-    private function normalizeEmail(string $value): string
-    {
-        return mb_strtolower(trim($value));
-    }
-
-    private function normalizeName(string $value): string
-    {
-        $value = mb_strtolower(trim($value));
-        $value = preg_replace('/\s+/', ' ', $value) ?? $value;
-
-        return $value;
     }
 }
