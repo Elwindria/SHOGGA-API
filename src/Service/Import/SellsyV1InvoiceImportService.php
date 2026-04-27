@@ -75,8 +75,8 @@ final class SellsyV1InvoiceImportService
         $first = $lines[0];
 
         $thirdId = $this->companyResolver->resolve(
-            $first->customerName,
-            $first->customerEmail
+            $first->customerEmail,
+            $first->customerName
         );
 
         $payload = $this->mapper->map($lines, $thirdId);
