@@ -27,9 +27,9 @@ final class CompanyMappingResolver
         $rows = $this->csvReaderService->readFromProjectTemp($filename);
 
         foreach ($rows as $row) {
-            $email = $row['EMAIL SOCIETE'] ?? null;
-            $name = $row['NOM SOCIETE'] ?? null;
-            $id = $row['ID SOCIETE SELLSY'] ?? null;
+            $email = $row['customer_email'] ?? null;
+            $name = $row['customer_name'] ?? null;
+            $id = $row['thirdid'] ?? null;
 
             if ($id === null) {
                 continue;
