@@ -28,19 +28,26 @@ final class SellsyV1InvoiceImportService
         $grouped = $this->groupByInvoice($dtos);
 
         $count = 0;
+        $countError = 0;
 
         foreach ($grouped as $invoiceNumber => $lines) {
             try {
                 $this->processInvoice($invoiceNumber, $lines);
                 $count++;
             }catch (\Throwable $e) {
-                $this->logger->error('Erreur pré-payload', [
-                    'invoice_number' => $invoiceNumber,
-                    'class' => $e,
+                $this->logger->error('Erreur pré-payload n°'.$countError, [
+                    'Facture n°' => $invoiceNumber,
                     'message' => $e->getMessage(),
                 ]);
+
+                $countError++;
             }
         }
+
+        $this->logger->error("Nombre de factures réussi", [
+            'Réussi ' => $count,
+            'Erreur ' => $countError,
+        ]);
 
         return $count;
     }
@@ -72,18 +79,7 @@ final class SellsyV1InvoiceImportService
             $first->customerEmail
         );
 
-
-
-        if ($thirdId === null) {
-            return;
-        }
-
         $payload = $this->mapper->map($lines, $thirdId);
-
-        $this->logger->info('Payload Sellsy V1 envoyé', [
-            'invoice_number' => $invoiceNumber,
-            'payload' => $payload,
-        ]);
 
         try {
             $response = $this->client->call($payload);
@@ -100,8 +96,6 @@ final class SellsyV1InvoiceImportService
                 'payload' => $payload,
                 'error' => $e->getMessage(),
             ]);
-
-            return;
         }
     }
 }
