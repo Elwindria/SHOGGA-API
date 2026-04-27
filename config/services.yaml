@@ -35,3 +35,7 @@ services:
     App\Service\Sellsy\SellsyV1Client:
         arguments:
             $baseUrl: '%env(SELLSY_API_V1_URL)%'
+
+    App\Service\Import\SellsyV1InvoiceImportService:
+        arguments:
+            $missingClientsLogger: '@monolog.logger.missing_clients'

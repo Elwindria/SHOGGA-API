@@ -16,6 +16,7 @@ final class SellsyV1InvoiceImportService
         private SellsyV1Client $client,
         private CompanyMappingResolver $companyResolver,
         private LoggerInterface $logger,
+        private readonly LoggerInterface $missingClientsLogger,
     ) {
     }
 
@@ -34,7 +35,7 @@ final class SellsyV1InvoiceImportService
         foreach ($grouped as $invoiceNumber => $lines) {
             try {
                 if ($this->processInvoice($invoiceNumber, $lines)) {
-                    $count["validé"]++;
+                    $count["Validé"]++;
                 } else {
                     $count["Erreur"]++;
                 };
@@ -77,6 +78,16 @@ final class SellsyV1InvoiceImportService
             $first->customerEmail,
             $first->customerName
         );
+
+        if ($thirdId === null) {
+            $this->missingClientsLogger->info('Client manquant', [
+                'invoice_number' => $invoiceNumber,
+                'customer_name' => $first->customerName,
+                'customer_email' => $first->customerEmail,
+            ]);
+
+            return false;
+        }
 
         $payload = $this->mapper->map($lines, $thirdId);
 
