@@ -13,7 +13,7 @@ final class SellsyTaxMappingResolver
 
     public function resolve(float $taxRate): int
     {
-        $taxIds = $this->sellsyTaxService->getTaxId();
+        $taxIds = $this->sellsyTaxService->getTaxIds();
 
         $key = number_format($taxRate, 2, '.', '');
 
