@@ -3,7 +3,7 @@
 namespace App\Service\Import;
 
 use App\Factory\Import\NormalizedInvoiceLineDtoFactory;
-use App\Mapper\Import\SellsyV1PayloadMapper;
+use App\Mapper\Import\SellsyV1InvoiceImportPayloadMapper;
 use App\Service\Sellsy\SellsyV1Client;
 use App\Service\Import\CompanyMappingResolver;
 use Psr\Log\LoggerInterface;
@@ -12,7 +12,7 @@ final class SellsyV1InvoiceImportService
 {
     public function __construct(
         private NormalizedInvoiceLineDtoFactory $factory,
-        private SellsyV1PayloadMapper $mapper,
+        private SellsyV1InvoiceImportPayloadMapper $mapper,
         private SellsyV1Client $client,
         private CompanyMappingResolver $companyResolver,
         private LoggerInterface $logger,

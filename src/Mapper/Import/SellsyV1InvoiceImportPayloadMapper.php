@@ -5,7 +5,7 @@ namespace App\Mapper\Import;
 use App\DTO\Import\NormalizedInvoiceLineDto;
 use App\Service\Sellsy\Tax\SellsyTaxMappingResolver;
 
-final class SellsyV1PayloadMapper
+final class SellsyV1InvoiceImportPayloadMapper
 {
     public function __construct(
         private SellsyTaxMappingResolver $taxResolver,
