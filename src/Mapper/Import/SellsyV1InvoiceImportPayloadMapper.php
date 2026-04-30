@@ -42,7 +42,9 @@ final class SellsyV1InvoiceImportPayloadMapper
             'enable_draft_number' => '1',
             'displayedDate' => (string) strtotime($line->invoiceDate),
             'subject' => 'Import historique Axonaut - '.$line->invoiceNumber,
-            'notes' => 'Ancien numéro de facture Axonaut : '.$line->invoiceNumber,
+            'currency' => 'EUR',
+            'doclang' => 'fr',
+            'notes' => $this->buildNotes($line),
         ];
     }
 
@@ -63,7 +65,7 @@ final class SellsyV1InvoiceImportPayloadMapper
 
     private function buildRow(NormalizedInvoiceLineDto $line): array
     {
-        return [
+        $row = [
             'row_type' => 'once',
             'row_name' => $line->lineLabel,
             'row_unit' => 'unité',
@@ -71,10 +73,31 @@ final class SellsyV1InvoiceImportPayloadMapper
             'row_taxid' => (string) $this->taxResolver->resolve($line->lineTaxRate),
             'row_qt' => $this->format($line->lineQuantity),
         ];
+
+        if ($line->lineDiscount > 0) {
+            $row['row_discount'] = $this->format($line->lineDiscount);
+            $row['row_discountUnit'] = 'amount';
+        }
+
+        return $row;
     }
 
     private function format(float $value): string
     {
         return number_format($value, 3, '.', '');
+    }
+
+    private function buildNotes(NormalizedInvoiceLineDto $line): string
+    {
+        return sprintf(
+            "Ancien numéro de facture Axonaut : %s\nDate de paiement : %s\nMode de paiement : %s\nClient : %s\nAdresse : %s %s %s",
+            $line->invoiceNumber,
+            $line->paidDate,
+            $line->paymentMethod,
+            $line->customerName,
+            $line->billingStreet,
+            $line->billingPostalCode,
+            $line->billingCity,
+        );
     }
 }

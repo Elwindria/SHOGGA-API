@@ -25,6 +25,11 @@ final class NormalizedInvoiceLineDtoFactory
             lineUnitHt: $this->float($row, 'line_unit_ht'),
             lineUnitTtc: $this->float($row, 'line_unit_ttc'),
             lineTaxRate: $this->float($row, 'line_tax_rate'),
+            billingPostalCode: $this->string($row, 'billing_postal_code'),
+            billingCountry: $this->string($row, 'billing_country'),
+            billingCity: $this->string($row, 'billing_city'),
+            billingStreet: $this->string($row, 'billing_street'),
+            lineDiscount: $this->float($row, 'line_discount'),
         );
     }
 

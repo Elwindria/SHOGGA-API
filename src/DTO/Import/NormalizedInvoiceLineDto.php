@@ -18,6 +18,11 @@ final readonly class NormalizedInvoiceLineDto
         public float $lineUnitHt,
         public float $lineUnitTtc,
         public float $lineTaxRate,
+        public string $billingPostalCode,
+        public string $billingCountry,
+        public string $billingCity,
+        public string $billingStreet,
+        public float $lineDiscount,
     ) {
     }
 }
