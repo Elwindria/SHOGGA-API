@@ -92,10 +92,6 @@ final class SellsyV1InvoiceImportPayloadMapper
             $line->invoiceNumber,
             $line->paidDate,
             $line->paymentMethod,
-            $line->customerName,
-            $line->billingStreet,
-            $line->billingPostalCode,
-            $line->billingCity,
         );
     }
 }
