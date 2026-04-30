@@ -28,7 +28,8 @@ final class SellsyV1Client
                 'Accept' => 'application/json',
             ],
             'body' => [
-                'request' => json_encode($payload, JSON_THROW_ON_ERROR),
+                'io_mode' => 'json',
+                'do_in' => json_encode($payload, JSON_THROW_ON_ERROR),
             ],
         ]);
 
