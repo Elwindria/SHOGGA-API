@@ -47,21 +47,21 @@ final class CompanyMappingResolver
 
     public function resolve(?string $email, ?string $name): ?int
     {
-        // 1. email (prioritaire)
-        if ($email !== null) {
-            $normalizedEmail = $this->normalizer->normalizeEmail($email);
-
-            if (isset($this->mappingByEmail[$normalizedEmail])) {
-                return $this->mappingByEmail[$normalizedEmail];
-            }
-        }
-
-        // 2. fallback nom
+        // 1. nom (prioritaire)
         if ($name !== null) {
             $normalizedName = $this->normalizer->normalizeName($name);
 
             if (isset($this->mappingByName[$normalizedName])) {
                 return $this->mappingByName[$normalizedName];
+            }
+        }
+
+        // 2. fallback email
+        if ($email !== null) {
+            $normalizedEmail = $this->normalizer->normalizeEmail($email);
+
+            if (isset($this->mappingByEmail[$normalizedEmail])) {
+                return $this->mappingByEmail[$normalizedEmail];
             }
         }
 
