@@ -39,9 +39,10 @@ final class SellsyV1PayloadMapper
         return [
             'doctype' => 'invoice',
             'thirdid' => (string) $thirdId,
-            'enable_draft_number' => '0',
+            'enable_draft_number' => '1',
             'displayedDate' => (string) strtotime($line->invoiceDate),
-            'ident' => $line->invoiceNumber,
+            'subject' => 'Import historique Axonaut - '.$line->invoiceNumber,
+            'notes' => 'Ancien numéro de facture Axonaut : '.$line->invoiceNumber,
         ];
     }
 
