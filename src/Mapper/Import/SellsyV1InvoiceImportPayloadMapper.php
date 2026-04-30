@@ -42,8 +42,6 @@ final class SellsyV1InvoiceImportPayloadMapper
             'enable_draft_number' => '1',
             'displayedDate' => (string) strtotime($line->invoiceDate),
             'subject' => 'Import historique Axonaut - '.$line->invoiceNumber,
-            'currency' => 'EUR',
-            'doclang' => 'fr',
             'notes' => $this->buildNotes($line),
         ];
     }
