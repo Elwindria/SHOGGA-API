@@ -1,4 +1,4 @@
-# Shogga - Lead Hub Service
+# Shogga - API
 
 ## Présentation
 
