@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Service\Sellsy\SellsyV1Client;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -25,7 +24,6 @@ class SellsyGetInfoCommand extends Command
     ];
 
     public function __construct(
-        private SellsyV1Client $sellsyV1Client,
         private SellsyTaxService $sellsyTaxService,
         private SellsyStaffService $sellsyStaffService,
     ) {
