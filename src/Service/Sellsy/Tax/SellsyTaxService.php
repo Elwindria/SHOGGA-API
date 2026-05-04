@@ -10,7 +10,7 @@ use Symfony\Contracts\Cache\CacheInterface;
 final class SellsyTaxService
 {
 
-    private const CACHE_KEY = 'sellsy_tax_ids';
+    private const CACHE_KEY = 'sellsy_taxes';
 
     public function __construct(
         private SellsyV1Client $client,
@@ -19,7 +19,7 @@ final class SellsyTaxService
     ) {
     }
 
-    public function getTaxIds(): array
+    public function getTaxes(): array
     {
         return $this->cache->get(self::CACHE_KEY, function (ItemInterface $item) {
             // durée de vie du cache (ex: 1 jour)
@@ -37,7 +37,7 @@ final class SellsyTaxService
 
                 $this->logger->info('Taxes Sellsy récupérées depuis API');
 
-                return $this->formatTaxes($response);
+                return $response;
             } catch (\Throwable $e) {
                 $this->logger->error('Erreur récupération taxes Sellsy V1', [
                     'error' => $e->getMessage(),
@@ -48,11 +48,17 @@ final class SellsyTaxService
         });
     }
 
+    public function getTaxIds(): array
+    {
+        $taxes = $this->getTaxes();
+        return $this->mapTaxesById($taxes);
+    }
+
     /**
      * @param array<mixed> $taxes
      * @return array<string, int>
      */
-    private function formatTaxes(array $taxes): array
+    private function mapTaxesById(array $taxes): array
     {
         $formatted = [];
 
