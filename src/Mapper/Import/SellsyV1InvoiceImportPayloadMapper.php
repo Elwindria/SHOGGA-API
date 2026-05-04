@@ -92,10 +92,10 @@ final class SellsyV1InvoiceImportPayloadMapper
     private function buildNotes(NormalizedInvoiceLineDto $line): string
     {
         return sprintf(
-            "Ancien numéro de facture Axonaut : %s\nDate de paiement : %s\nMode de paiement : %s\nClient : %s\nAdresse : %s %s %s",
+            "Ancien numéro de facture Axonaut : %s\nDate de paiement : %s\nMode de paiement : %s",
             $line->invoiceNumber,
             $line->paidDate,
-            $line->paymentMethod,
+            $line->paymentMethod
         );
     }
 }
