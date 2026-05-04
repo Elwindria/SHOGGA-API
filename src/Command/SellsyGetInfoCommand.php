@@ -19,7 +19,7 @@ class SellsyGetInfoCommand extends Command
 {
 
     private const TYPES_ARRAY = [
-        'tax',
+        'taxes',
         'staffs',
     ];
 
@@ -53,7 +53,7 @@ class SellsyGetInfoCommand extends Command
 
         foreach ($taxes as $tax) {
             $io->writeln(sprintf(
-                'ID: %s | Nom: %s | Taux: %s',
+                'ID: %s | Taux: %s',
                 $tax['id'] ?? '',
                 $tax['formatted_value'] ?? '',
             ));
@@ -66,11 +66,11 @@ class SellsyGetInfoCommand extends Command
     {
         $staffs = $this->sellsyStaffService->getStaffs();
 
-        foreach ($staffs as $s) {
+        foreach ($staffs['result'] ?? [] as $staff) {
             $io->writeln(sprintf(
-                'ID: %s | Nom: %s',
-                $s['id'] ?? '',
-                $s['fullName'] ?? ''
+                'ID: %s | fullName: %s',
+                $staff['id'] ?? '',
+                $staff['fullName'] ?? ''
             ));
         }
 

@@ -60,13 +60,13 @@ final class SellsyStaffService
     {
         $formatted = [];
 
-        foreach ($staffs as $staff) {
+        foreach ($staffs['result'] ?? [] as $staff) {
             if (!is_array($staff)) {
                 continue;
             }
 
             $fullName = $staff['fullName'] ?? null;
-            $id = $staff['contactId'] ?? null;
+            $id = $staff['id'] ?? null;
 
             if ($fullName === null || $id === null) {
                 continue;
