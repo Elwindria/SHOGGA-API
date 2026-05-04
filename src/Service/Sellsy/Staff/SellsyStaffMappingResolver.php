@@ -15,6 +15,8 @@ final class SellsyStaffMappingResolver
     {
         $staffIds = $this->sellsyStaffService->getStaffIdsByName();
 
-        return $staffIds['Pierre MIGARD'];
+        return $staffIds['Pierre MIGARD']
+            ?? $staffIds['Pierre Lopez']
+            ?? throw new \RuntimeException('Aucun staff trouvé');
     }
 }
