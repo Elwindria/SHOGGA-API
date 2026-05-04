@@ -57,8 +57,7 @@ class SellsyGetInfoCommand extends Command
             $io->writeln(sprintf(
                 'ID: %s | Nom: %s | Taux: %s',
                 $tax['id'] ?? '',
-                $tax['name'] ?? '',
-                $tax['rate'] ?? ''
+                $tax['formatted_value'] ?? '',
             ));
         }
 
