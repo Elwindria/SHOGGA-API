@@ -22,7 +22,7 @@ final class SellsyV1Client
     public function call(array $payload): array
     {
 
-        //Protection contre le spam de l'API Sellsy ! Limite de 5 requests par seconde ! 429 Too Many Requests
+        //Protection contre le spam de l'API Sellsy ! Limite de 5 requests par seconde ! Evite les 429 Too Many Requests
         $this->throttle();
 
         $token = $this->tokenManager->getAccessToken();
