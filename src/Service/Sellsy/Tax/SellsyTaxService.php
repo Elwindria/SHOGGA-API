@@ -48,7 +48,7 @@ final class SellsyTaxService
         });
     }
 
-    public function getTaxIds(): array
+    public function getTaxIdsByName(): array
     {
         $taxes = $this->getTaxes();
         return $this->mapTaxesById($taxes);

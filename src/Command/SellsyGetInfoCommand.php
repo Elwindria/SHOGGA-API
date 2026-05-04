@@ -51,7 +51,7 @@ class SellsyGetInfoCommand extends Command
 
     private function handleTaxes(SymfonyStyle $io): int
     {
-        $taxes = $this->sellsyTaxService->getTax();
+        $taxes = $this->sellsyTaxService->getTaxes();
 
         foreach ($taxes as $tax) {
             $io->writeln(sprintf(
