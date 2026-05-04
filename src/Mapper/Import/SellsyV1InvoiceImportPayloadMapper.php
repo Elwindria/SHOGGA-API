@@ -39,18 +39,11 @@ final class SellsyV1InvoiceImportPayloadMapper
         int $thirdId,
         int $staffId
     ): array {
-
-        $date = \DateTimeImmutable::createFromFormat('d/m/Y', $line->invoiceDate);
-
-        if (!$date) {
-            throw new \RuntimeException('Date de facture invalide : ' . $line->invoiceDate);
-        }
-
         return [
             'doctype' => 'invoice',
             'thirdid' => (string) $thirdId,
             'enable_draft_number' => '1',
-            'displayedDate' => $date->getTimestamp(),
+            'displayedDate' => $this->toTimestamp($line->invoiceDate),
             'subject' => 'Import historique Axonaut - '.$line->invoiceNumber,
             'notes' => $this->buildNotes($line),
             'docspeakerStaffId' => $staffId,
@@ -104,5 +97,16 @@ final class SellsyV1InvoiceImportPayloadMapper
             $line->paidDate,
             $line->paymentMethod
         );
+    }
+
+    private function toTimestamp(string $date): int
+    {
+        $dateTime = \DateTimeImmutable::createFromFormat('!d/m/Y', trim($date));
+
+        if (!$dateTime) {
+            throw new \RuntimeException('Date invalide : ' . $date);
+        }
+
+        return $dateTime->getTimestamp();
     }
 }
