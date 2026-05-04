@@ -17,7 +17,7 @@ final class SellsyV1InvoiceImportPayloadMapper
      * @param int $thirdId
      * @return array<string, mixed>
      */
-    public function map(array $lines, int $thirdId): array
+    public function map(array $lines, int $thirdId, int $staffId): array
     {
         if (count($lines) === 0) {
             throw new \RuntimeException('Aucune ligne à mapper.');
@@ -28,14 +28,17 @@ final class SellsyV1InvoiceImportPayloadMapper
         return [
             'method' => 'Document.create',
             'params' => [
-                'document' => $this->buildDocument($first, $thirdId),
+                'document' => $this->buildDocument($first, $thirdId, $staffId),
                 'row' => $this->buildRows($lines),
             ],
         ];
     }
 
-    private function buildDocument(NormalizedInvoiceLineDto $line, int $thirdId): array
-    {
+    private function buildDocument(
+        NormalizedInvoiceLineDto $line,
+        int $thirdId,
+        int $staffId
+    ): array {
         return [
             'doctype' => 'invoice',
             'thirdid' => (string) $thirdId,
@@ -43,6 +46,7 @@ final class SellsyV1InvoiceImportPayloadMapper
             'displayedDate' => (string) strtotime($line->invoiceDate),
             'subject' => 'Import historique Axonaut - '.$line->invoiceNumber,
             'notes' => $this->buildNotes($line),
+            'docspeakerStaffId' => $staffId,
         ];
     }
 

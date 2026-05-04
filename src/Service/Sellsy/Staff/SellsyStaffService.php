@@ -48,8 +48,7 @@ final class SellsyStaffService
 
     public function getStaffIdsByName(): array
     {
-        $staffs = $this->getStaffs();
-        return $this->mapStaffsById($staffs);
+        return $this->mapStaffsById($this->getStaffs());
     }
 
     /**
