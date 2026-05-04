@@ -72,7 +72,7 @@ final class SellsyV1InvoiceImportPayloadMapper
             'row_name' => $line->lineLabel,
             'row_unit' => 'unité',
             'row_unitAmount' => $this->format($line->lineUnitHt),
-            'row_taxid' => (string) $this->taxResolver->resolve($line->lineTaxRate),
+            'row_taxid' => (string) $this->taxResolver->getTaxIdByRate($line->lineTaxRate),
             'row_qt' => $this->format($line->lineQuantity),
         ];
 

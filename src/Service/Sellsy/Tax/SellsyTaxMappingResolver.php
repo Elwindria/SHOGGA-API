@@ -11,7 +11,7 @@ final class SellsyTaxMappingResolver
     ) {
     }
 
-    public function resolve(float $taxRate): int
+    public function getTaxIdByRate(float $taxRate): int
     {
         $taxIds = $this->sellsyTaxService->getTaxIdsByName();
 
