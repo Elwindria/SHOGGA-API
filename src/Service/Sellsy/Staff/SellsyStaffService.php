@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Service\Sellsy\Tax;
+namespace App\Service\Sellsy\Staff;
 
 use App\Service\Sellsy\SellsyV1Client;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 
-final class SellsyTaxService
+final class SellsyStaffService
 {
 
     private const CACHE_KEY = 'sellsy_staffs';

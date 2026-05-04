@@ -72,7 +72,7 @@ class SellsyGetInfoCommand extends Command
             $io->writeln(sprintf(
                 'ID: %s | Nom: %s',
                 $s['id'] ?? '',
-                $s['fullname'] ?? ''
+                $s['fullName'] ?? ''
             ));
         }
 
