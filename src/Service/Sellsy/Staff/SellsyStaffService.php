@@ -66,7 +66,7 @@ final class SellsyStaffService
             }
 
             $fullName = $staff['fullName'] ?? null;
-            $id = $staff['id'] ?? null;
+            $id = $staff['linkedid'] ?? null;
 
             if ($fullName === null || $id === null) {
                 continue;

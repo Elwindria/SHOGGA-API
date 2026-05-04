@@ -69,7 +69,7 @@ class SellsyGetInfoCommand extends Command
         foreach ($staffs['result'] ?? [] as $staff) {
             $io->writeln(sprintf(
                 'ID: %s | fullName: %s',
-                $staff['id'] ?? '',
+                $staff['linkedid'] ?? '',
                 $staff['fullName'] ?? ''
             ));
         }
