@@ -6,6 +6,7 @@ use App\Factory\Import\NormalizedInvoiceLineDtoFactory;
 use App\Mapper\Import\SellsyV1InvoiceImportPayloadMapper;
 use App\Service\Sellsy\SellsyV1Client;
 use App\Service\Import\CompanyMappingResolver;
+use App\Service\Sellsy\Staff\SellsyStaffMappingResolver;
 use Psr\Log\LoggerInterface;
 
 final class SellsyV1InvoiceImportService
@@ -17,6 +18,7 @@ final class SellsyV1InvoiceImportService
         private CompanyMappingResolver $companyResolver,
         private LoggerInterface $logger,
         private readonly LoggerInterface $missingClientsLogger,
+        private SellsyStaffMappingResolver $sellsyStaffMappingResolver,
     ) {
     }
 
@@ -79,6 +81,8 @@ final class SellsyV1InvoiceImportService
             $first->customerName
         );
 
+        $staffId = $this->sellsyStaffMappingResolver->getStaffIdofPierreMigard();
+
         if ($thirdId === null) {
             $this->missingClientsLogger->info('Client manquant', [
                 'invoice_number' => $invoiceNumber,
@@ -89,7 +93,7 @@ final class SellsyV1InvoiceImportService
             return false;
         }
 
-        $payload = $this->mapper->map($lines, $thirdId);
+        $payload = $this->mapper->map($lines, $thirdId, $staffId);
 
         try {
             $response = $this->client->call($payload);
