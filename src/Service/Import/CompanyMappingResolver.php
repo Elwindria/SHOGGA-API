@@ -45,7 +45,7 @@ final class CompanyMappingResolver
         }
     }
 
-    public function resolve(?string $email, ?string $name): ?int
+    public function getThirdIdByEmailOrName(?string $email, ?string $name): ?int
     {
         // 1. nom (prioritaire)
         if ($name !== null) {

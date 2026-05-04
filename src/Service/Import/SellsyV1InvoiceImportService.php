@@ -76,7 +76,7 @@ final class SellsyV1InvoiceImportService
     {
         $first = $lines[0];
 
-        $thirdId = $this->companyResolver->resolve(
+        $thirdId = $this->companyResolver->getThirdIdByEmailOrName(
             $first->customerEmail,
             $first->customerName
         );
