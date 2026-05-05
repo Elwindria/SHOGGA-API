@@ -11,6 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use App\Service\Sellsy\Tax\SellsyTaxService;
 use App\Service\Sellsy\Staff\SellsyStaffService;
 use App\Service\Sellsy\Catalogue\SellsyCatalogueService;
+use App\Service\Sellsy\Support\SellsySupportService;
 
 #[AsCommand(
     name: 'app:sellsy:get-info',
@@ -23,12 +24,14 @@ class SellsyGetInfoCommand extends Command
         'taxes',
         'staffs',
         'catalogue',
+        'support',
     ];
 
     public function __construct(
         private SellsyTaxService $sellsyTaxService,
         private SellsyStaffService $sellsyStaffService,
-        private SellsyCatalogueService $sellsyCatalogueService
+        private SellsyCatalogueService $sellsyCatalogueService,
+        private SellsySupportService $sellsySupportService,
     ) {
         parent::__construct();
     }
@@ -47,6 +50,7 @@ class SellsyGetInfoCommand extends Command
             self::TYPES_ARRAY[0] => $this->handleTaxes($io),
             self::TYPES_ARRAY[1] => $this->handleStaffs($io),
             self::TYPES_ARRAY[2] => $this->handleCatalogue($io),
+            self::TYPES_ARRAY[3] => $this->handleSupport($io),
             default => $this->handleUnknown($io, $type),
         };
     }
@@ -90,6 +94,20 @@ class SellsyGetInfoCommand extends Command
                 'ID: %s | Nom du produit : %s',
                 $c['id'] ?? '',
                 $c['tradename'] ?? ''
+            ));
+        }
+
+        return Command::SUCCESS;
+    }
+
+    private function handleSupport(SymfonyStyle $io): int
+    {
+        $support = $this->sellsySupportService->getSupport();
+
+        foreach ($support as $s) {
+            $io->writeln(sprintf(
+                'ID: %s',
+                $s ?? '',
             ));
         }
 
