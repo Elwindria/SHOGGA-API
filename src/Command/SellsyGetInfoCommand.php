@@ -87,7 +87,7 @@ class SellsyGetInfoCommand extends Command
 
         foreach ($catalogue['result'] ?? [] as $c) {
             $io->writeln(sprintf(
-                'ID: %s | fullName: %s',
+                'ID: %s | Nom du produit : %s',
                 $c['id'] ?? '',
                 $c['tradename'] ?? ''
             ));
