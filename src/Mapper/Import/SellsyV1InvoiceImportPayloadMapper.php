@@ -80,6 +80,13 @@ final class SellsyV1InvoiceImportPayloadMapper
             'row_qt' => $this->format($line->lineQuantity),
         ];
 
+            // "SHOGGA N°1 Origine / carton de 500 ml x 6 bouteilles – L’équilibre parfait entre plaisir & praticité",
+            // "SHOGGA N°1 Origine / carton de 700 ml x 6 bouteilles – Le format généreux pour les convaincus",
+            // "SHOGGA (200 ml x 12) - Boisson au gingembre premium bio",
+            // "Frais de livraison – Participation aux coûts logistiques (commande < 500 € HT)",
+            // "SHOGGA N°1 Origine / carton de 200 ml x 12 bouteilles – Format découverte idéal pour vos clients",
+            // "Nouveau - SHOGGA N°2 Primal / carton de 500 ml x 6 bouteilles – Sans sucre ajouté",
+
         if ($line->lineDiscount > 0) {
             $row['row_discount'] = $this->format($line->lineDiscount);
             $row['row_discountUnit'] = 'amount';
