@@ -27,7 +27,9 @@ final class SellsyCatalogueService
 
             $payload = [
                 'method' => 'Catalogue.getList',
-                'params' => [],
+                'params' => [
+                    'type' => "item",
+                ],
             ];
 
             try {
