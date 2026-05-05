@@ -10,6 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use App\Service\Sellsy\Tax\SellsyTaxService;
 use App\Service\Sellsy\Staff\SellsyStaffService;
+use App\Service\Sellsy\Catalogue\SellsyCatalogueService;
 
 #[AsCommand(
     name: 'app:sellsy:get-info',
@@ -21,11 +22,13 @@ class SellsyGetInfoCommand extends Command
     private const TYPES_ARRAY = [
         'taxes',
         'staffs',
+        'catalogue',
     ];
 
     public function __construct(
         private SellsyTaxService $sellsyTaxService,
         private SellsyStaffService $sellsyStaffService,
+        private SellsyCatalogueService $sellsyCatalogueService
     ) {
         parent::__construct();
     }
@@ -43,6 +46,7 @@ class SellsyGetInfoCommand extends Command
         return match ($type) {
             self::TYPES_ARRAY[0] => $this->handleTaxes($io),
             self::TYPES_ARRAY[1] => $this->handleStaffs($io),
+            self::TYPES_ARRAY[2] => $this->handleCatalogue($io),
             default => $this->handleUnknown($io, $type),
         };
     }
@@ -71,6 +75,21 @@ class SellsyGetInfoCommand extends Command
                 'ID: %s | fullName: %s',
                 $staff['linkedid'] ?? '',
                 $staff['fullName'] ?? ''
+            ));
+        }
+
+        return Command::SUCCESS;
+    }
+
+    private function handleCatalogue(SymfonyStyle $io): int
+    {
+        $catalogue = $this->sellsyCatalogueService->getCatalogue();
+
+        foreach ($catalogue['result'] ?? [] as $c) {
+            $io->writeln(sprintf(
+                'ID: %s | fullName: %s',
+                $c['id'] ?? '',
+                $c['tradename'] ?? ''
             ));
         }
 
