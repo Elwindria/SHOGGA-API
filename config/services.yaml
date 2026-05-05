@@ -39,3 +39,7 @@ services:
     App\Service\Import\SellsyV1InvoiceImportService:
         arguments:
             $missingClientsLogger: '@monolog.logger.missing_clients'
+
+    App\Service\Import\AxonautInvoiceDiscountMappingResolver:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
