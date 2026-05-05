@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use App\Service\Sellsy\Tax\SellsyTaxService;
 use App\Service\Sellsy\Staff\SellsyStaffService;
 use App\Service\Sellsy\Catalogue\SellsyCatalogueService;
-use App\Service\Sellsy\Support\SellsySupportService;
+use App\Service\Sellsy\Supplier\SellsySupplierService;
 
 #[AsCommand(
     name: 'app:sellsy:get-info',
@@ -24,14 +24,14 @@ class SellsyGetInfoCommand extends Command
         'taxes',
         'staffs',
         'catalogue',
-        'support',
+        'supplier',
     ];
 
     public function __construct(
         private SellsyTaxService $sellsyTaxService,
         private SellsyStaffService $sellsyStaffService,
         private SellsyCatalogueService $sellsyCatalogueService,
-        private SellsySupportService $sellsySupportService,
+        private SellsySupplierService $sellsySupplierService,
     ) {
         parent::__construct();
     }
@@ -50,7 +50,7 @@ class SellsyGetInfoCommand extends Command
             self::TYPES_ARRAY[0] => $this->handleTaxes($io),
             self::TYPES_ARRAY[1] => $this->handleStaffs($io),
             self::TYPES_ARRAY[2] => $this->handleCatalogue($io),
-            self::TYPES_ARRAY[3] => $this->handleSupport($io),
+            self::TYPES_ARRAY[3] => $this->handleSupplier($io),
             default => $this->handleUnknown($io, $type),
         };
     }
@@ -100,14 +100,15 @@ class SellsyGetInfoCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function handleSupport(SymfonyStyle $io): int
+    private function handleSupplier(SymfonyStyle $io): int
     {
-        $support = $this->sellsySupportService->getSupport();
+        $supplier = $this->sellsySupplierService->getSupplier();
 
-        foreach ($support as $s) {
+        foreach ($supplier as $s) {
             $io->writeln(sprintf(
-                'ID: %s',
-                $s ?? '',
+                'ID: %s | Nom : %s',
+                $s['id'] ?? '',
+                $s['name'] ?? ''
             ));
         }
 

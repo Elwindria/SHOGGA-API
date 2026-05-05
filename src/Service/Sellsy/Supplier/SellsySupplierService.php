@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Service\Sellsy\Support;
+namespace App\Service\Sellsy\Supplier;
 
 use App\Service\Sellsy\SellsyV1Client;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Flex\Response;
 
-final class SellsySupportService
+final class SellsySupplierService
 {
 
-    private const CACHE_KEY = 'sellsy_support';
+    private const CACHE_KEY = 'sellsy_supplier';
 
     public function __construct(
         private SellsyV1Client $client,
@@ -19,14 +20,14 @@ final class SellsySupportService
     ) {
     }
 
-    public function getSupport(): array
+    public function getSupplier(): array
     {
         return $this->cache->get(self::CACHE_KEY, function (ItemInterface $item) {
             // durée de vie du cache (ex: 1 jour)
             $item->expiresAfter(86400);
 
             $payload = [
-                'method' => 'Support.getList',
+                'method' => 'Supplier.getList',
                 'params' => [],
             ];
 
