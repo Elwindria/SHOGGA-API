@@ -76,8 +76,8 @@ final class SellsyV1InvoiceImportPayloadMapper
         if ($line->lineLabel === "Frais de livraison – Participation aux coûts logistiques (commande < 500 € HT)") {
             //lignes de type frais de livraisons 
             $row = [
-                'row_type' => 'shipping',
-                'row_shipping' => $line->lineLabel,
+                'row_type' => 'once',
+                'row_name' => $line->lineLabel,
             ];
         } else {
             //lignes de type Produit
@@ -92,7 +92,7 @@ final class SellsyV1InvoiceImportPayloadMapper
         $row['row_qt'] = $this->format($line->lineQuantity);
 
 
-        if ($line->lineDiscount > 0) {
+        if ($line->lineDiscount !== 0) {
             $row['row_discount'] = $this->format($line->lineDiscount);
             $row['row_discountUnit'] = 'amount';
         }
@@ -102,7 +102,7 @@ final class SellsyV1InvoiceImportPayloadMapper
 
     private function format(float $value): string
     {
-        return number_format($value, 3, '.', '');
+        return number_format(abs($value), 3, '.', '');
     }
 
     private function buildNotes(NormalizedInvoiceLineDto $line): string
