@@ -3,12 +3,14 @@
 namespace App\Mapper\Import;
 
 use App\DTO\Import\NormalizedInvoiceLineDto;
+use App\Service\Import\AxonautInvoiceDiscountMappingResolver;
 use App\Service\Sellsy\Tax\SellsyTaxMappingResolver;
 
 final class SellsyV1InvoiceImportPayloadMapper
 {
     public function __construct(
         private SellsyTaxMappingResolver $taxResolver,
+        private AxonautInvoiceDiscountMappingResolver $AxonautInvoiceDiscountMappingResolver,
     ) {
     }
 
@@ -47,6 +49,8 @@ final class SellsyV1InvoiceImportPayloadMapper
             'subject' => 'Import historique Axonaut - '.$line->invoiceNumber,
             'notes' => $this->buildNotes($line),
             'docspeakerStaffId' => $staffId,
+            'globalDiscount' => $this->AxonautInvoiceDiscountMappingResolver->getGlobalDiscountByInvoiceNumber($line->invoiceNumber),
+            'globalDiscountUnit' => 'amount',
         ];
     }
 
