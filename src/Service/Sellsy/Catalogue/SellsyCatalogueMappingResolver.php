@@ -15,8 +15,6 @@ final class SellsyCatalogueMappingResolver
     {
         $catalogueIds = $this->sellsyCatalogueService->getCatalogueIdsByName();
 
-        dump($catalogueIds, $name);
-
         if (!isset($catalogueIds[$name])) {
             throw new \RuntimeException(sprintf(
                 'Aucun produit Sellsy configuré pour le nom %s.',
