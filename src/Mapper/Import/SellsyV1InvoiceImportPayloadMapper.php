@@ -73,13 +73,24 @@ final class SellsyV1InvoiceImportPayloadMapper
 
     private function buildRow(NormalizedInvoiceLineDto $line): array
     {
-        $row = [
-            'row_type' => 'item',
-            'row_linkedid' => $this->sellsyCatalogueMappingResolver->getCatalogueIdByName($line->lineLabel),
-            'row_unitAmount' => $this->format($line->lineUnitHt),
-            'row_taxid' => (string) $this->taxResolver->getTaxIdByRate($line->lineTaxRate),
-            'row_qt' => $this->format($line->lineQuantity),
-        ];
+        if ($line->lineLabel === "Frais de livraison – Participation aux coûts logistiques (commande < 500 € HT)") {
+            //lignes de type frais de livraisons 
+            $row = [
+                'row_type' => 'shipping',
+                'row_shipping' => $line->lineLabel,
+            ];
+        } else {
+            //lignes de type Produit
+            $row = [
+                'row_type' => 'item',
+                'row_linkedid' => $this->sellsyCatalogueMappingResolver->getCatalogueIdByInvoiceLineName($line->lineLabel),
+            ];
+        }
+
+        $row['row_unitAmount'] = $this->format($line->lineUnitHt);
+        $row['row_taxid'] = (string) $this->taxResolver->getTaxIdByRate($line->lineTaxRate);
+        $row['row_qt'] = $this->format($line->lineQuantity);
+
 
         if ($line->lineDiscount > 0) {
             $row['row_discount'] = $this->format($line->lineDiscount);
