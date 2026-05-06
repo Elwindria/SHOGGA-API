@@ -43,16 +43,18 @@ final class SellsyV1InvoiceImportPayloadMapper
         int $thirdId,
         int $staffId
     ): array {
+
         return [
             'doctype' => 'invoice',
             'thirdid' => (string) $thirdId,
-            'enable_draft_number' => '1',
+            'enable_draft_number' => '0',
             'displayedDate' => $this->toTimestamp($line->invoiceDate),
             'subject' => 'Import historique Axonaut - '.$line->invoiceNumber,
             'notes' => $this->buildNotes($line),
             'docspeakerStaffId' => $staffId,
             'globalDiscount' => $this->AxonautInvoiceDiscountMappingResolver->getGlobalDiscountByInvoiceNumber($line->invoiceNumber),
             'globalDiscountUnit' => 'amount',
+            // 'ident' => $line->invoiceNumber,
         ];
     }
 
@@ -77,16 +79,17 @@ final class SellsyV1InvoiceImportPayloadMapper
             //lignes de type frais de livraisons 
             $row = [
                 'row_type' => 'once',
-                'row_name' => $line->lineLabel,
             ];
         } else {
             //lignes de type Produit
             $row = [
                 'row_type' => 'item',
                 'row_linkedid' => $this->sellsyCatalogueMappingResolver->getCatalogueIdByInvoiceLineName($line->lineLabel),
+                'row_purchaseAmount' => $this->sellsyCatalogueMappingResolver->getPurchaseAmountByInvoiceLineName($line->lineLabel),
             ];
         }
 
+        $row['row_name'] = $line->lineLabel;
         $row['row_unitAmount'] = $this->format($line->lineUnitHt);
         $row['row_taxid'] = (string) $this->taxResolver->getTaxIdByRate($line->lineTaxRate);
         $row['row_qt'] = $this->format($line->lineQuantity);

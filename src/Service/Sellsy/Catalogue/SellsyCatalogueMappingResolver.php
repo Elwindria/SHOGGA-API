@@ -54,4 +54,26 @@ final class SellsyCatalogueMappingResolver
 
         return $catalogueIds[$sellsyProductName];
     }
+
+    public function getPurchaseAmountByInvoiceLineName(string $invoiceLineName): int
+    {
+        $sellsyProductName = self::AXONAUT_TO_SELLSY_PRODUCT_NAMES[$invoiceLineName] ?? null;
+
+        if ($sellsyProductName === null) {
+            throw new \RuntimeException(sprintf(
+                'Aucun mapping produit Axonaut → Sellsy configuré pour "%s".',
+                $invoiceLineName
+            ));
+        }
+
+        $purchaseAmount = [
+            'SHOGGA N°1 Origine  (500 ml)  – L’équilibre parfait entre plaisir & praticité' => 36,
+            'SHOGGA N°1 Origine  (700 ml)  – Le format généreux pour les convaincus' => 48,
+            'SHOGGA N°1 Origine (200 ml) – Format découverte idéal pour vos clients' => 48,
+            'Nouveauté - SHOGGA N°2 Primal (500 ml)  – Sans sucre ajouté' => 38,
+            'Doseur/bec verseur en acier inoxydable' => 0.35,
+        ];
+
+        return $purchaseAmount[$sellsyProductName];
+    }
 }
