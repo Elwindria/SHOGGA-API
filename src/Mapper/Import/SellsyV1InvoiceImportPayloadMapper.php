@@ -54,7 +54,7 @@ final class SellsyV1InvoiceImportPayloadMapper
             'docspeakerStaffId' => $staffId,
             'globalDiscount' => $this->AxonautInvoiceDiscountMappingResolver->getGlobalDiscountByInvoiceNumber($line->invoiceNumber),
             'globalDiscountUnit' => 'amount',
-            // 'ident' => $line->invoiceNumber,
+            // 'ident' => (string) $line->invoiceNumber,
         ];
     }
 
