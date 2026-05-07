@@ -105,7 +105,7 @@ final class SellsyV1InvoiceImportPayloadMapper
 
     private function format(float $value): string
     {
-        //Il faut enlever les - des réduction d'axonaut car sellsy fait prix - (-reduction) et - - = + 
+        //Il faut enlever les - des réduction d'axonaut car sellsy fait prix - (-reduction) et - - = +
         return number_format(abs($value), 3, '.', '');
     }
 
