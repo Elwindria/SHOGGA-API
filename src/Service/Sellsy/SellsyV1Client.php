@@ -3,6 +3,7 @@
 namespace App\Service\Sellsy;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Psr\Log\LoggerInterface;
 
 final class SellsyV1Client
 {
@@ -11,6 +12,7 @@ final class SellsyV1Client
     public function __construct(
         private HttpClientInterface $httpClient,
         private readonly SellsyTokenManager $tokenManager,
+        private LoggerInterface $logger,
         private string $baseUrl,
     ) {
     }
@@ -56,10 +58,20 @@ final class SellsyV1Client
             throw new \RuntimeException('Réponse Sellsy invalide (JSON).');
         }
 
-        // Structure typique V1 : status + response + error
         if (($data['status'] ?? '') !== 'success') {
-            $error = $data['error']['message'] ?? 'Erreur inconnue Sellsy V1';
-            throw new \RuntimeException($error);
+
+            $this->logger->error('Réponse Sellsy V1 en erreur', [
+                'payload' => $payload,
+                'response' => $data,
+            ]);
+
+            $error = $data['error']['message'] ?? $data['error'] ?? 'Erreur inconnue Sellsy V1';
+
+            throw new \RuntimeException(
+                is_string($error)
+                    ? $error
+                    : json_encode($error, JSON_THROW_ON_ERROR)
+            );
         }
 
         return $data['response'] ?? [];

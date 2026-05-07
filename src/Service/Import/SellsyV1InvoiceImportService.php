@@ -105,14 +105,6 @@ final class SellsyV1InvoiceImportService
 
             return true;
         } catch (\Throwable $e) {
-            $this->logger->error('Erreur Sellsy V1', [
-                'invoice_number' => $invoiceNumber,
-                'customer_name' => $first->customerName,
-                'customer_email' => $first->customerEmail,
-                'payload' => $payload,
-                'error' => $e->getMessage(),
-            ]);
-
             return false;
         }
     }

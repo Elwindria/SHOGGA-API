@@ -47,14 +47,14 @@ final class SellsyV1InvoiceImportPayloadMapper
         return [
             'doctype' => 'invoice',
             'thirdid' => (string) $thirdId,
-            'enable_draft_number' => '0',
+            'ident' => (string) $line->invoiceNumber,
             'displayedDate' => $this->toTimestamp($line->invoiceDate),
             'subject' => 'Import historique Axonaut - '.$line->invoiceNumber,
             'notes' => $this->buildNotes($line),
-            'docspeakerStaffId' => $staffId,
             'globalDiscount' => $this->AxonautInvoiceDiscountMappingResolver->getGlobalDiscountByInvoiceNumber($line->invoiceNumber),
             'globalDiscountUnit' => 'amount',
-            // 'ident' => (string) $line->invoiceNumber,
+            'docspeakerStaffId' => $staffId,
+            'enable_draft_number' => 1,
         ];
     }
 
