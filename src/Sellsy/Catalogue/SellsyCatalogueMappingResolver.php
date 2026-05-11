@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Service\Sellsy\Catalogue;
+namespace App\Sellsy\Catalogue;
 
-use App\Service\Sellsy\Catalogue\SellsyCatalogueService;
+use App\Sellsy\Catalogue\SellsyCatalogueService;
 
 final class SellsyCatalogueMappingResolver
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DTO\Import;
+namespace App\Import\AxonautToSellsy\DTO;
 
 final readonly class NormalizedInvoiceLineDto
 {

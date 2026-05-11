@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Service\Sellsy\Staff;
+namespace App\Sellsy\Staff;
 
-use App\Service\Sellsy\Staff\SellsyStaffService;
+use App\Sellsy\Staff\SellsyStaffService;
 
 final class SellsyStaffMappingResolver
 {

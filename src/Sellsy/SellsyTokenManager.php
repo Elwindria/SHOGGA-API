@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Sellsy;
+namespace App\Sellsy;
 
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;

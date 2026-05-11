@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Import;
+namespace App\Import\AxonautToSellsy\Resolver;
 
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;

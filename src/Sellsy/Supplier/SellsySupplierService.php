@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Service\Sellsy\Supplier;
+namespace App\Sellsy\Supplier;
 
-use App\Service\Sellsy\SellsyV1Client;
+use App\Sellsy\SellsyV1Client;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\CacheInterface;
-use Symfony\Flex\Response;
 
 final class SellsySupplierService
 {

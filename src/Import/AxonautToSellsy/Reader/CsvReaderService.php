@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Import;
+namespace App\Import\AxonautToSellsy\Reader;
 
 use SplFileObject;
 

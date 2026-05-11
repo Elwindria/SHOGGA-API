@@ -8,10 +8,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use App\Service\Sellsy\Tax\SellsyTaxService;
-use App\Service\Sellsy\Staff\SellsyStaffService;
-use App\Service\Sellsy\Catalogue\SellsyCatalogueService;
-use App\Service\Sellsy\Supplier\SellsySupplierService;
+use App\Sellsy\Tax\SellsyTaxService;
+use App\Sellsy\Staff\SellsyStaffService;
+use App\Sellsy\Catalogue\SellsyCatalogueService;
+use App\Sellsy\Supplier\SellsySupplierService;
 
 #[AsCommand(
     name: 'app:sellsy:get-info',

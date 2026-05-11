@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Factory\Import;
+namespace App\Import\AxonautToSellsy\Factory;
 
-use App\DTO\Import\NormalizedInvoiceLineDto;
+use App\Import\AxonautToSellsy\DTO\NormalizedInvoiceLineDto;
 
 final class NormalizedInvoiceLineDtoFactory
 {
