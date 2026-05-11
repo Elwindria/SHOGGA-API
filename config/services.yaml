@@ -43,3 +43,7 @@ services:
     App\Import\AxonautToSellsy\Resolver\AxonautInvoiceDiscountMappingResolver:
         arguments:
             $projectDir: '%kernel.project_dir%'
+
+    App\Sellsy\SellsyV2Client:
+        arguments:
+            $baseUrl: '%env(SELLSY_API_V2_BASE_URL)%'
