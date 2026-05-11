@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Service\Import;
+namespace App\Import\AxonautToSellsy\Resolver;
 
-use App\Service\Normalizer\Normalizer;
+use App\Shared\Normalizer\Normalizer;
+use App\Import\AxonautToSellsy\Reader\CsvReaderService;
 
 final class CompanyMappingResolver
 {

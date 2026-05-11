@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Service\Sellsy;
+namespace App\Sellsy;
 
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use App\Sellsy\SellsyTokenManager;
 use Psr\Log\LoggerInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class SellsyV1Client
 {

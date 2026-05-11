@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Mapper\Import;
+namespace App\Import\AxonautToSellsy\Mapper;
 
-use App\DTO\Import\NormalizedInvoiceLineDto;
-use App\Service\Import\AxonautInvoiceDiscountMappingResolver;
-use App\Service\Sellsy\Tax\SellsyTaxMappingResolver;
-use App\Service\Sellsy\Catalogue\SellsyCatalogueMappingResolver;
+use App\Import\AxonautToSellsy\DTO\NormalizedInvoiceLineDto;
+use App\Import\AxonautToSellsy\Resolver\AxonautInvoiceDiscountMappingResolver;
+use App\Sellsy\Tax\SellsyTaxMappingResolver;
+use App\Sellsy\Catalogue\SellsyCatalogueMappingResolver;
 
 final class SellsyV1InvoiceImportPayloadMapper
 {

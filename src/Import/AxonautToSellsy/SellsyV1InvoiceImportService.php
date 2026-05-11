@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Service\Import;
+namespace App\Import\AxonautToSellsy;
 
-use App\Factory\Import\NormalizedInvoiceLineDtoFactory;
-use App\Mapper\Import\SellsyV1InvoiceImportPayloadMapper;
-use App\Service\Sellsy\SellsyV1Client;
-use App\Service\Import\CompanyMappingResolver;
-use App\Service\Sellsy\Staff\SellsyStaffMappingResolver;
+use App\Import\AxonautToSellsy\Factory\NormalizedInvoiceLineDtoFactory;
+use App\Import\AxonautToSellsy\Mapper\SellsyV1InvoiceImportPayloadMapper;
+use App\Sellsy\SellsyV1Client;
+use App\Import\AxonautToSellsy\Resolver\CompanyMappingResolver;
+use App\Sellsy\Staff\SellsyStaffMappingResolver;
 use Psr\Log\LoggerInterface;
 
 final class SellsyV1InvoiceImportService

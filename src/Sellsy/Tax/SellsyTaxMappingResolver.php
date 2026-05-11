@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Service\Sellsy\Tax;
+namespace App\Sellsy\Tax;
 
-use App\Service\Sellsy\Tax\SellsyTaxService;
+use App\Sellsy\Tax\SellsyTaxService;
 
 final class SellsyTaxMappingResolver
 {

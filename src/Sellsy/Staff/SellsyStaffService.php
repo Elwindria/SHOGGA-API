@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Service\Sellsy\Staff;
+namespace App\Sellsy\Staff;
 
-use App\Service\Sellsy\SellsyV1Client;
+use App\Sellsy\SellsyV1Client;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\CacheInterface;

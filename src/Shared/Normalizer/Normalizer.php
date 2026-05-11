@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Normalizer;
+namespace App\Shared\Normalizer;
 
 final class Normalizer
 {

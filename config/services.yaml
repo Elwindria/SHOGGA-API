@@ -26,20 +26,20 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    App\Service\Sellsy\SellsyTokenManager:
+    App\Sellsy\SellsyTokenManager:
         arguments:
             $clientId: '%sellsy.client_id%'
             $clientSecret: '%sellsy.client_secret%'
             $authUrl: '%sellsy.auth_url%'
 
-    App\Service\Sellsy\SellsyV1Client:
+    App\Sellsy\SellsyV1Client:
         arguments:
             $baseUrl: '%env(SELLSY_API_V1_URL)%'
 
-    App\Service\Import\SellsyV1InvoiceImportService:
+    App\Import\AxonautToSellsy\SellsyV1InvoiceImportService:
         arguments:
             $missingClientsLogger: '@monolog.logger.missing_clients'
 
-    App\Service\Import\AxonautInvoiceDiscountMappingResolver:
+    App\Import\AxonautToSellsy\Resolver\AxonautInvoiceDiscountMappingResolver:
         arguments:
             $projectDir: '%kernel.project_dir%'

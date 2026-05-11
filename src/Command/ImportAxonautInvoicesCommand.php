@@ -2,9 +2,9 @@
 
 namespace App\Command;
 
-use App\Service\Import\CsvReaderService;
-use App\Service\Import\SellsyV1InvoiceImportService;
-use App\Service\Import\CompanyMappingResolver;
+use App\Import\AxonautToSellsy\Reader\CsvReaderService;
+use App\Import\AxonautToSellsy\SellsyV1InvoiceImportService;
+use App\Import\AxonautToSellsy\Resolver\CompanyMappingResolver;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
