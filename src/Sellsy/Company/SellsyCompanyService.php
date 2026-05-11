@@ -4,13 +4,40 @@ namespace App\Sellsy\Company;
 
 use App\Sellsy\SellsyV2Client;
 use Psr\Log\LoggerInterface;
+use Symfony\Contracts\Cache\ItemInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 
 final class SellsyCompanyService
 {
+    private const CACHE_KEY = 'sellsy_companies';
+
     public function __construct(
         private SellsyV2Client $client,
         private LoggerInterface $logger,
+        private readonly CacheInterface $cache,
     ) {
+    }
+
+    public function getCompanies(): array
+    {
+        return $this->cache->get(self::CACHE_KEY, function (ItemInterface $item) {
+            // durée de vie du cache (ex: 1 jour)
+            $item->expiresAfter(86400);
+
+            try {
+                $response = $this->client->request('GET', '/companies', []);
+
+                $this->logger->info('Recherche compagnies Sellsy V2', []);
+
+                return $response;
+            } catch (\Throwable $e) {
+                $this->logger->error('Erreur recherche compagnies Sellsy V2', [
+                    'error' => $e->getMessage(),
+                ]);
+
+                throw $e;
+            }
+        });
     }
 
     public function searchCompanyByEmail(string $email): array
@@ -19,7 +46,6 @@ final class SellsyCompanyService
             $response = $this->client->request('POST', '/companies/search', [
                 'filters' => [
                     'email' => $email,
-                    'is_archived' => false,
                 ],
             ]);
 

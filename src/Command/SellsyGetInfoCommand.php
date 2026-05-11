@@ -11,6 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use App\Sellsy\Tax\SellsyTaxService;
 use App\Sellsy\Staff\SellsyStaffService;
 use App\Sellsy\Catalogue\SellsyCatalogueService;
+use App\Sellsy\Company\SellsyCompanyService;
 use App\Sellsy\Supplier\SellsySupplierService;
 
 #[AsCommand(
@@ -25,6 +26,7 @@ class SellsyGetInfoCommand extends Command
         'staffs',
         'catalogue',
         'supplier',
+        'companies',
     ];
 
     public function __construct(
@@ -32,6 +34,7 @@ class SellsyGetInfoCommand extends Command
         private SellsyStaffService $sellsyStaffService,
         private SellsyCatalogueService $sellsyCatalogueService,
         private SellsySupplierService $sellsySupplierService,
+        private SellsyCompanyService $sellsyCompanyService,
     ) {
         parent::__construct();
     }
@@ -51,6 +54,7 @@ class SellsyGetInfoCommand extends Command
             self::TYPES_ARRAY[1] => $this->handleStaffs($io),
             self::TYPES_ARRAY[2] => $this->handleCatalogue($io),
             self::TYPES_ARRAY[3] => $this->handleSupplier($io),
+            self::TYPES_ARRAY[4] => $this->handleCompanies($io),
             default => $this->handleUnknown($io, $type),
         };
     }
@@ -109,6 +113,22 @@ class SellsyGetInfoCommand extends Command
                 'ID: %s | Nom : %s',
                 $s['id'] ?? '',
                 $s['name'] ?? ''
+            ));
+        }
+
+        return Command::SUCCESS;
+    }
+
+    private function handleCompanies(SymfonyStyle $io): int
+    {
+        $companies = $this->sellsyCompanyService->getCompanies();
+
+        foreach ($companies['data'] ?? [] as $company) {
+            $io->writeln(sprintf(
+                'ID: %s | Nom : %s | Email: %s',
+                $company['id'] ?? '',
+                $company['name'] ?? '',
+                $company['email'] ?? ''
             ));
         }
 
