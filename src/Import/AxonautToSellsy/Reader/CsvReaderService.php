@@ -11,7 +11,7 @@ class CsvReaderService
      */
     public function readFromProjectTemp(string $filename, string $delimiter = ';'): array
     {
-        $projectDir = dirname(__DIR__, 3);
+        $projectDir = dirname(__DIR__, 4);
         $fullPath = $projectDir . '/var/temp/' . ltrim($filename, '/');
 
         if (!is_file($fullPath)) {
