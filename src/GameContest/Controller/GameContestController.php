@@ -37,8 +37,6 @@ final class GameContestController extends AbstractController
             //Vérifie si les RGPD sont acceptés
             $this->gameContestSubmissionValidator->validateRGPD($payload);
 
-            
-
             return new JsonResponse([
                 'success' => true,
             ]);
