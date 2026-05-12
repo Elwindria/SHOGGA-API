@@ -21,8 +21,23 @@ final class GameContestController extends AbstractController
     {
         $payload = json_decode($request->getContent(), true);
 
+        // Exemple payload
+        // payload {
+        //     "email": "test@example.com",
+        //     "hasWon": true,
+        //     "rewardType": "discount",
+        //     "newsletter": true,
+        //     "rgpd": true
+        // }
+
         try {
+            //Vérifier si Email non vide / Valide / N'existe pas déjà dans la base de donnée (donc il a déjà jouer)
             $this->gameContestSubmissionValidator->validateEmail($payload);
+
+            //Vérifie si les RGPD sont acceptés
+            $this->gameContestSubmissionValidator->validateRGPD($payload);
+
+            
 
             return new JsonResponse([
                 'success' => true,

@@ -27,4 +27,11 @@ final class GameContestSubmissionValidator
             throw new \RuntimeException('Cet email existe déjà dans Sellsy.');
         }
     }
+
+    public function validateRGPD(array $payload): void
+    {
+        if ($payload["rgpd"]) {
+            throw new \InvalidArgumentException('RGPD non acceptés');
+        }
+    }
 }
