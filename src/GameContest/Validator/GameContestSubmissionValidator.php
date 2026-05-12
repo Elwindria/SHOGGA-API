@@ -1,5 +1,7 @@
 <?php
 
+namespace App\GameContest\Validator;
+
 use App\Sellsy\Company\SellsyCompanyService;
 
 final class GameContestSubmissionValidator
