@@ -2,7 +2,6 @@
 
 namespace App\Controller\Api;
 
-use App\Sellsy\Company\SellsyCompanyService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,7 +10,6 @@ use Symfony\Component\Routing\Attribute\Route;
 final class GameContestController extends AbstractController
 {
     public function __construct(
-        private SellsyCompanyService $sellsyCompanyService,
     ) {
     }
 
@@ -25,12 +23,6 @@ final class GameContestController extends AbstractController
                 'success' => false,
                 'message' => 'Payload JSON invalide.',
             ], 400);
-        }
-
-        $email = $payload['email'] ?? null;
-
-        if ($this->sellsyCompanyService->companyExistsByEmail($email)) {
-            throw new \RuntimeException('Email déjà présent dans Sellsy.');
         }
 
         return $this->json([
