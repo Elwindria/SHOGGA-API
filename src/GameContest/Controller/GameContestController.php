@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Api\GameContest;
+namespace App\GameContest\Controller\GameContest;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,6 +17,8 @@ final class GameContestController extends AbstractController
     public function submit(Request $request): JsonResponse
     {
         $payload = json_decode($request->getContent(), true);
+
+
 
         if (!is_array($payload)) {
             return $this->json([
