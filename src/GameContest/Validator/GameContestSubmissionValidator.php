@@ -30,7 +30,7 @@ final class GameContestSubmissionValidator
 
     public function validateRGPD(array $payload): void
     {
-        if ($payload["rgpd"]) {
+        if (!filter_var($payload['rgpd'] ?? false, FILTER_VALIDATE_BOOLEAN)) {
             throw new \InvalidArgumentException('RGPD non acceptés');
         }
     }
