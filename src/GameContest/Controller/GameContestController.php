@@ -2,6 +2,7 @@
 
 namespace App\GameContest\Controller\GameContest;
 
+use App\GameContest\GameContestSubmissionService;
 use App\GameContest\Validator\GameContestSubmissionValidator;
 use App\Shared\Normalizer\Normalizer;
 use App\Shared\Sanitizer\Sanitizer;
@@ -16,6 +17,7 @@ final class GameContestController extends AbstractController
         private GameContestSubmissionValidator $gameContestSubmissionValidator,
         private Sanitizer $sanitizer,
         private Normalizer $normalizer,
+        private GameContestSubmissionService $gameContestSubmissionService,
     ) {
     }
 
@@ -48,10 +50,11 @@ final class GameContestController extends AbstractController
             //Vérifie si les RGPD sont acceptés
             $this->gameContestSubmissionValidator->validateRGPD($payload);
 
+            $this->gameContestSubmissionService->handle($payload);
+
             return new JsonResponse([
                 'success' => true,
             ]);
-
         } catch (\RuntimeException $e) {
 
             return new JsonResponse([

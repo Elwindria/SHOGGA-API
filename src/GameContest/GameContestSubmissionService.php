@@ -16,6 +16,8 @@ final class GameContestSubmissionService
             }    
         }
 
-        // plus tard : création Sellsy si cases cochées
+        if ($payload["newsletter"]) {
+            // plus tard : création Sellsy si cases cochées
+        }
     }
 }
