@@ -6,6 +6,7 @@ use App\Import\AxonautToSellsy\DTO\NormalizedInvoiceLineDto;
 use App\Import\AxonautToSellsy\Resolver\AxonautInvoiceDiscountMappingResolver;
 use App\Sellsy\Tax\SellsyTaxMappingResolver;
 use App\Sellsy\Catalogue\SellsyCatalogueMappingResolver;
+use App\Sellsy\Payment\SellsyPaymentMappingResolver;
 
 final class SellsyV1InvoiceImportPayloadMapper
 {
@@ -13,6 +14,7 @@ final class SellsyV1InvoiceImportPayloadMapper
         private SellsyTaxMappingResolver $taxResolver,
         private AxonautInvoiceDiscountMappingResolver $AxonautInvoiceDiscountMappingResolver,
         private SellsyCatalogueMappingResolver $sellsyCatalogueMappingResolver,
+        private SellsyPaymentMappingResolver $sellsyPaymentMappingResolver,
     ) {
     }
 
@@ -129,5 +131,41 @@ final class SellsyV1InvoiceImportPayloadMapper
         }
 
         return $dateTime->getTimestamp();
+    }
+
+    public function mapPayment(string $docId, array $lines): array
+    {
+        $first = $lines[0];
+
+        $date = \DateTimeImmutable::createFromFormat(
+            'd/m/Y',
+            $first->paidDate
+        );
+
+        if (!$date) {
+            throw new \RuntimeException(sprintf(
+                'Date de paiement invalide : %s',
+                $first->paidDate
+            ));
+        }
+
+        return [
+            'method' => 'Document.createPayment',
+            'params' => [
+                'payment' => [
+                    'date' => $date->getTimestamp(),
+                    'amount' => (string) $first->invoiceTotalTtc,
+                    'medium' => $this->sellsyPaymentMappingResolver->getPaymentIdByName($first->paymentMethod),
+                    'ident' => (string) $first->invoiceNumber,
+                    'doctype' => 'invoice',
+                    'docid' => (int) $docId,
+                    'notes' => sprintf(
+                        'Paiement import historique d axonaut à Sellsy => facture %s',
+                        $first->invoiceNumber
+                    ),
+                    'email' => 'N',
+                ],
+            ],
+        ];
     }
 }

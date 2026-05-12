@@ -95,6 +95,8 @@ final class SellsyV1InvoiceImportService
 
         $payload = $this->mapper->map($lines, $thirdId, $staffId);
 
+        $paidDate = $first->paidDate;
+
         try {
             $response = $this->client->call($payload);
 
@@ -103,9 +105,54 @@ final class SellsyV1InvoiceImportService
                 'response' => $response,
             ]);
 
+            $this->validateInvoice($response['doc_id'], $paidDate);
+
+            $this->logger->info('Réponse Sellsy V1 OK', [
+                'invoice_number' => $invoiceNumber,
+                'response' => $response,
+            ]);
+
+            $this->createInvoicePayment($response['doc_id'], $lines);
+
+            $this->logger->info('Réponse Sellsy V1 OK', [
+                'invoice_number' => $invoiceNumber,
+                'response' => $response,
+            ]);
+
             return true;
         } catch (\Throwable $e) {
+            $this->logger->info('erreur', [
+                'invoice_number' => $invoiceNumber,
+                'response' => $e->getMessage(),
+            ]);
             return false;
         }
+    }
+
+    private function validateInvoice(int|string $docId, string $paidDate): array
+    {
+        $date = \DateTimeImmutable::createFromFormat('d/m/Y', $paidDate);
+
+        if (!$date) {
+            throw new \RuntimeException(sprintf(
+                'Date de paiement invalide : %s',
+                $paidDate
+            ));
+        }
+
+        return $this->client->call([
+            'method' => 'Document.validate',
+            'params' => [
+                'docid' => (string) $docId,
+                'date' => $date->getTimestamp(),
+            ],
+        ]);
+    }
+
+    private function createInvoicePayment(string $docId,array $lines)
+    {
+        $payload = $this->mapper->mapPayment($docId, $lines);
+
+        return $this->client->call($payload);
     }
 }

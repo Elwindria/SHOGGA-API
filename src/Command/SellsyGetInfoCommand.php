@@ -12,6 +12,7 @@ use App\Sellsy\Tax\SellsyTaxService;
 use App\Sellsy\Staff\SellsyStaffService;
 use App\Sellsy\Catalogue\SellsyCatalogueService;
 use App\Sellsy\Company\SellsyCompanyService;
+use App\Sellsy\Payment\SellsyPaymentService;
 use App\Sellsy\Supplier\SellsySupplierService;
 
 #[AsCommand(
@@ -27,6 +28,7 @@ class SellsyGetInfoCommand extends Command
         'catalogue',
         'supplier',
         'companies',
+        'payments',
     ];
 
     public function __construct(
@@ -35,6 +37,7 @@ class SellsyGetInfoCommand extends Command
         private SellsyCatalogueService $sellsyCatalogueService,
         private SellsySupplierService $sellsySupplierService,
         private SellsyCompanyService $sellsyCompanyService,
+        private SellsyPaymentService $sellsyPaymentService,
     ) {
         parent::__construct();
     }
@@ -55,6 +58,7 @@ class SellsyGetInfoCommand extends Command
             self::TYPES_ARRAY[2] => $this->handleCatalogue($io),
             self::TYPES_ARRAY[3] => $this->handleSupplier($io),
             self::TYPES_ARRAY[4] => $this->handleCompanies($io),
+            self::TYPES_ARRAY[5] => $this->handlePayments($io),
             default => $this->handleUnknown($io, $type),
         };
     }
@@ -129,6 +133,23 @@ class SellsyGetInfoCommand extends Command
                 $company['id'] ?? '',
                 $company['name'] ?? '',
                 $company['email'] ?? ''
+            ));
+        }
+
+        return Command::SUCCESS;
+    }
+
+    private function handlePayments(SymfonyStyle $io): int
+    {
+        $payments = $this->sellsyPaymentService->getPayments();
+
+        dump($payments);
+        
+        foreach ($payments['data'] ?? [] as $payment) {
+            $io->writeln(sprintf(
+                'ID: %s |  mediumTxt: %s',
+                $payment['id'] ?? '',
+                $payment['mediumTxt'] ?? ''
             ));
         }
 
