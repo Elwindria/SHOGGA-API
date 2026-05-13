@@ -1,6 +1,6 @@
 <?php
 
-namespace App\GameContest\Controller\GameContest;
+namespace App\GameContest\Controller;
 
 use App\GameContest\GameContestSubmissionService;
 use App\GameContest\Validator\GameContestSubmissionValidator;
