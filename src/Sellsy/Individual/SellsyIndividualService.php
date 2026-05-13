@@ -41,7 +41,7 @@ final class SellsyIndividualService
     {
         return $this->sellsyV2Client->request('POST', 'individuals/'.$id.'/smart-tags', [
             [
-                'value' => 'jeu concours',
+                'value' => 'Jeu concours',
             ]
         ]);
     }
