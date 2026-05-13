@@ -9,3 +9,9 @@
 
 controllers:
     resource: routing.controllers
+
+game_contest_controllers:
+    resource:
+        path: ../src/GameContest/Controller/
+        namespace: App\GameContest\Controller
+    type: attribute
