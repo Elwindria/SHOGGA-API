@@ -3,11 +3,13 @@
 namespace App\GameContest\Validator;
 
 use App\Sellsy\Company\SellsyCompanyService;
+use App\Sellsy\Individual\SellsyIndividualService;
 
 final class GameContestSubmissionValidator
 {
     public function __construct(
         private SellsyCompanyService $sellsyCompanyService,
+        private SellsyIndividualService $sellsyIndividualService,
     ) {
     }
 
@@ -24,6 +26,10 @@ final class GameContestSubmissionValidator
         }
 
         if ($this->sellsyCompanyService->companyExistsByEmail($email)) {
+            throw new \RuntimeException('Cet email existe déjà dans Sellsy.');
+        }
+
+        if ($this->sellsyIndividualService->individualExistsByEmail($email)) {
             throw new \RuntimeException('Cet email existe déjà dans Sellsy.');
         }
     }

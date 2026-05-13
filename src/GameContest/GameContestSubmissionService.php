@@ -2,9 +2,12 @@
 
 namespace App\GameContest;
 
+use App\Sellsy\Individual\SellsyIndividualService;
+
 final class GameContestSubmissionService
 {
     public function __construct(
+        private SellsyIndividualService $sellsyIndividualService,
     ) {
     }
 
@@ -17,7 +20,7 @@ final class GameContestSubmissionService
         }
 
         if ($payload["newsletter"]) {
-            // plus tard : création Sellsy si cases cochées
+            $this->sellsyIndividualService->createIndividualProspectFromGameContest($payload['email']);
         }
     }
 }
