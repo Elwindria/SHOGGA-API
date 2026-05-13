@@ -95,8 +95,6 @@ final class SellsyV1InvoiceImportService
 
         $payload = $this->mapper->map($lines, $thirdId, $staffId);
 
-        $paidDate = $first->paidDate;
-
         try {
             $response = $this->client->call($payload);
 
@@ -105,7 +103,7 @@ final class SellsyV1InvoiceImportService
                 'response' => $response,
             ]);
 
-            $this->validateInvoice($response['doc_id'], $paidDate);
+            $this->validateInvoice($response['doc_id'], $first->invoiceDate);
 
             $this->logger->info('Réponse Sellsy V1 OK', [
                 'invoice_number' => $invoiceNumber,
@@ -129,14 +127,14 @@ final class SellsyV1InvoiceImportService
         }
     }
 
-    private function validateInvoice(int|string $docId, string $paidDate): array
+    private function validateInvoice(int|string $docId, string $invoiceDate): array
     {
-        $date = \DateTimeImmutable::createFromFormat('d/m/Y', $paidDate);
+        $date = \DateTimeImmutable::createFromFormat('d/m/Y', $invoiceDate);
 
         if (!$date) {
             throw new \RuntimeException(sprintf(
-                'Date de paiement invalide : %s',
-                $paidDate
+                'Date d emission de la facture invalide : %s',
+                $invoiceDate
             ));
         }
 

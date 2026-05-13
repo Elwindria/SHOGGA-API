@@ -95,6 +95,7 @@ final class SellsyV1InvoiceImportPayloadMapper
         }
 
         $row['row_name'] = $line->lineLabel;
+        $row['row_notes'] = $line->lineLabel;
         $row['row_unitAmount'] = $this->format($line->lineUnitHt);
         $row['row_taxid'] = (string) $this->taxResolver->getTaxIdByRate($line->lineTaxRate);
         $row['row_qt'] = $this->format($line->lineQuantity);
@@ -157,7 +158,7 @@ final class SellsyV1InvoiceImportPayloadMapper
             'params' => [
                 'payment' => [
                     'date' => $date->getTimestamp(),
-                    'amount' => (string) $first->invoiceTotalTtc,
+                    'amount' => $this->calculateInvoiceTotalTtc($lines),
                     'medium' => $this->sellsyPayMediumsMappingResolver->getPayMediumsIdByName($first->paymentMethod),
                     'ident' => (string) $first->invoiceNumber,
                     'doctype' => 'invoice',
@@ -170,5 +171,16 @@ final class SellsyV1InvoiceImportPayloadMapper
                 ],
             ],
         ];
+    }
+
+    private function calculateInvoiceTotalTtc(array $lines): string
+    {
+        $total = 0.0;
+
+        foreach ($lines as $line) {
+            $total += $line->invoiceTotalTtc;
+        }
+
+        return number_format($total, 2, '.', '');
     }
 }
