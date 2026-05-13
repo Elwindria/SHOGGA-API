@@ -42,18 +42,16 @@ final class SellsySmartTagsService
     }
 
     //trouve l'id d'un smart tag en fonction de son noms (seulement pour les particulier ! Sellsy fait la différence des smarttags client/particulier/société etc)
-    public function getSmartTagsIdsOfIndicidualsByNames(array $names): array
+    public function getSmartTagsIdOfIndividualsByName(string $name): ?int
     {
         $tags = $this->getSmartTags() ?? [];
 
-        $mapped = [];
-
         foreach ($tags as $tag) {
-            if (in_array($tag['value'], $names, true)) {
-                $mapped[$tag['value']] = $tag['id'];
+            if ($tag['value'] === $name) {
+                return $tag['id'];
             }
         }
 
-        return $mapped;
+        return null;
     }
 }

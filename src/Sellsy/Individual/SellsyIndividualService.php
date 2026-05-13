@@ -3,11 +3,13 @@
 namespace App\Sellsy\Individual;
 
 use App\Sellsy\SellsyV2Client;
+use App\Sellsy\SmartTags\SellsySmartTagsService;
 
 final class SellsyIndividualService
 {
     public function __construct(
         private SellsyV2Client $sellsyV2Client,
+        private SellsySmartTagsService $SellsySmartTagsService,
     ) {
     }
 
@@ -29,6 +31,16 @@ final class SellsyIndividualService
             'first_name' => 'Jeu',
             'last_name' => 'Concours',
             'email' => $email,
+            'smart_tags' => [
+                [
+                    'value' => 'newsletter',
+                    'id' => $this->SellsySmartTagsService->getSmartTagsIdOfIndividualsByName('newsletter'),
+                ],
+                [
+                    'value' => 'jeu concours',
+                    'id' => $this->SellsySmartTagsService->getSmartTagsIdOfIndividualsByName('newsletter'),
+                ],
+            ],
             'note' => "Prospect créer via le formulaire du jeu concours SHOGGA (des salons)",
             "marketing_campaigns_subscriptions" => [
                 "email",
