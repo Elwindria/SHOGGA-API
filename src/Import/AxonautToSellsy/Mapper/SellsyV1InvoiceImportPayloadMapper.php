@@ -6,7 +6,7 @@ use App\Import\AxonautToSellsy\DTO\NormalizedInvoiceLineDto;
 use App\Import\AxonautToSellsy\Resolver\AxonautInvoiceDiscountMappingResolver;
 use App\Sellsy\Tax\SellsyTaxMappingResolver;
 use App\Sellsy\Catalogue\SellsyCatalogueMappingResolver;
-use App\Sellsy\Payment\SellsyPaymentMappingResolver;
+use App\Sellsy\PayMediums\SellsyPayMediumsMappingResolver;
 
 final class SellsyV1InvoiceImportPayloadMapper
 {
@@ -14,7 +14,7 @@ final class SellsyV1InvoiceImportPayloadMapper
         private SellsyTaxMappingResolver $taxResolver,
         private AxonautInvoiceDiscountMappingResolver $AxonautInvoiceDiscountMappingResolver,
         private SellsyCatalogueMappingResolver $sellsyCatalogueMappingResolver,
-        private SellsyPaymentMappingResolver $sellsyPaymentMappingResolver,
+        private SellsyPayMediumsMappingResolver $sellsyPayMediumsMappingResolver,
     ) {
     }
 
@@ -56,6 +56,9 @@ final class SellsyV1InvoiceImportPayloadMapper
             'globalDiscount' => $this->AxonautInvoiceDiscountMappingResolver->getGlobalDiscountByInvoiceNumber($line->invoiceNumber),
             'globalDiscountUnit' => 'amount',
             'docspeakerStaffId' => $staffId,
+            'payMediums' => [
+                $this->sellsyPayMediumsMappingResolver->getPayMediumsIdByName($line->paymentMethod),
+            ],
             'enable_draft_number' => 1,
         ];
     }
@@ -155,7 +158,7 @@ final class SellsyV1InvoiceImportPayloadMapper
                 'payment' => [
                     'date' => $date->getTimestamp(),
                     'amount' => (string) $first->invoiceTotalTtc,
-                    'medium' => $this->sellsyPaymentMappingResolver->getPaymentIdByName($first->paymentMethod),
+                    'medium' => $this->sellsyPayMediumsMappingResolver->getPayMediumsIdByName($first->paymentMethod),
                     'ident' => (string) $first->invoiceNumber,
                     'doctype' => 'invoice',
                     'docid' => (int) $docId,
