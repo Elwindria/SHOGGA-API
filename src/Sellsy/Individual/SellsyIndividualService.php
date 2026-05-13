@@ -9,7 +9,6 @@ final class SellsyIndividualService
 {
     public function __construct(
         private SellsyV2Client $sellsyV2Client,
-        private SellsySmartTagsService $SellsySmartTagsService,
     ) {
     }
 
@@ -41,7 +40,9 @@ final class SellsyIndividualService
     public function linkSmartTagToIndividual(int $id): array
     {
         return $this->sellsyV2Client->request('POST', 'individuals/'.$id.'/smart-tags', [
-            'value' => 'jeu concours',
+            [
+                'value' => 'jeu concours',
+            ]
         ]);
     }
 }
