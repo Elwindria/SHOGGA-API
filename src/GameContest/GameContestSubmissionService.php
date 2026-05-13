@@ -20,7 +20,13 @@ final class GameContestSubmissionService
         }
 
         if ($payload["newsletter"]) {
-            $this->sellsyIndividualService->createIndividualProspectFromGameContest($payload['email']);
+
+            //Créer l'individu
+            $individual = $this->sellsyIndividualService->createIndividualProspectFromGameContest($payload['email']);
+            $id = $individual['id'];
+
+            //ratache un smartTag "jeu concours"
+            $this->sellsyIndividualService->linkSmartTagToIndividual($id);
         }
     }
 }

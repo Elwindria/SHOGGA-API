@@ -31,20 +31,17 @@ final class SellsyIndividualService
             'first_name' => 'Jeu',
             'last_name' => 'Concours',
             'email' => $email,
-            'smart_tags' => [
-                [
-                    'value' => 'newsletter',
-                    'id' => $this->SellsySmartTagsService->getSmartTagsIdOfIndividualsByName('newsletter'),
-                ],
-                [
-                    'value' => 'jeu concours',
-                    'id' => $this->SellsySmartTagsService->getSmartTagsIdOfIndividualsByName('newsletter'),
-                ],
-            ],
             'note' => "Prospect créer via le formulaire du jeu concours SHOGGA (des salons)",
             "marketing_campaigns_subscriptions" => [
                 "email",
             ],
+        ]);
+    }
+
+    public function linkSmartTagToIndividual(int $id): array
+    {
+        return $this->sellsyV2Client->request('POST', 'individuals/'.$id.'/smart-tags', [
+            'value' => 'jeu concours',
         ]);
     }
 }
