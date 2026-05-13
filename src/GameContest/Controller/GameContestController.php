@@ -37,8 +37,6 @@ final class GameContestController extends AbstractController
         // Exemple payload
         // payload {
         //     "email": "test@example.com",
-        //     "hasWon": true,
-        //     "rewardType": "discount",
         //     "newsletter": true,
         //     "rgpd": true
         // }
@@ -63,4 +61,31 @@ final class GameContestController extends AbstractController
             ], 400);
         }
     }
+
+    #[Route('/api/game-contest/hasWon', name: 'api_game_contest_hasWon', methods: ['POST'])]
+    public function hasWon(Request $request): JsonResponse
+    {
+        $payload = json_decode($request->getContent(), true);
+
+        // payload {
+        //     "hasWon": true,
+        //     "rewardType": "discount",
+        // }
+
+        try {
+            $this->gameContestSubmissionService->handleHasWon($payload);
+
+            return new JsonResponse([
+                'success' => true,
+            ]);
+        } catch (\RuntimeException $e) {
+
+            return new JsonResponse([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 400);
+        }
+    }
+
+
 }

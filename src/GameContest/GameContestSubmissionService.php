@@ -13,12 +13,6 @@ final class GameContestSubmissionService
 
     public function handle(array $payload): void
     {
-        if ($payload["hasWon"]) {
-            if ($payload["rewardType"] === "-10%" || $payload["rewardType"] === "-20%") {
-                //envoyé le mail via brevo ?
-            }    
-        }
-
         if ($payload["newsletter"]) {
 
             //Créer l'individu
@@ -27,6 +21,15 @@ final class GameContestSubmissionService
 
             //ratache un smartTag "jeu concours"
             $this->sellsyIndividualService->linkSmartTagToIndividual($id);
+        }
+    }
+
+    public function handleHasWon(array $payload): void
+    {
+        if ($payload["hasWon"]) {
+            if ($payload["rewardType"] === "-10%" || $payload["rewardType"] === "-20%") {
+                //envoyé le mail via brevo ?
+            }    
         }
     }
 }
