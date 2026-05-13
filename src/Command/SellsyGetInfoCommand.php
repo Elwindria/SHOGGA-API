@@ -12,6 +12,7 @@ use App\Sellsy\Tax\SellsyTaxService;
 use App\Sellsy\Staff\SellsyStaffService;
 use App\Sellsy\Catalogue\SellsyCatalogueService;
 use App\Sellsy\Company\SellsyCompanyService;
+use App\Sellsy\PayMediums\SellsyPayMediumsService;
 use App\Sellsy\Payment\SellsyPaymentService;
 use App\Sellsy\Supplier\SellsySupplierService;
 
@@ -29,6 +30,7 @@ class SellsyGetInfoCommand extends Command
         'supplier',
         'companies',
         'payments',
+        'paymediums',
     ];
 
     public function __construct(
@@ -38,6 +40,7 @@ class SellsyGetInfoCommand extends Command
         private SellsySupplierService $sellsySupplierService,
         private SellsyCompanyService $sellsyCompanyService,
         private SellsyPaymentService $sellsyPaymentService,
+        private SellsyPayMediumsService $sellsyPayMediumsService,
     ) {
         parent::__construct();
     }
@@ -59,6 +62,7 @@ class SellsyGetInfoCommand extends Command
             self::TYPES_ARRAY[3] => $this->handleSupplier($io),
             self::TYPES_ARRAY[4] => $this->handleCompanies($io),
             self::TYPES_ARRAY[5] => $this->handlePayments($io),
+            self::TYPES_ARRAY[6] => $this->handlePayMediums($io),
             default => $this->handleUnknown($io, $type),
         };
     }
@@ -142,14 +146,29 @@ class SellsyGetInfoCommand extends Command
     private function handlePayments(SymfonyStyle $io): int
     {
         $payments = $this->sellsyPaymentService->getPayments();
-
-        dump($payments);
         
         foreach ($payments['data'] ?? [] as $payment) {
             $io->writeln(sprintf(
                 'ID: %s |  mediumTxt: %s',
                 $payment['id'] ?? '',
                 $payment['mediumTxt'] ?? ''
+            ));
+        }
+
+        return Command::SUCCESS;
+    }
+
+    private function handlePayMediums(SymfonyStyle $io): int
+    {
+        $payMediums = $this->sellsyPayMediumsService->getPayMediums();
+
+        dump($payMediums);
+        
+        foreach ($payMediums['data'] ?? [] as $payMediums) {
+            $io->writeln(sprintf(
+                'ID: %s |  mediumTxt: %s',
+                $payMediums['id'] ?? '',
+                $payMediums['mediumTxt'] ?? ''
             ));
         }
 
