@@ -9,7 +9,6 @@
 parameters:     
     sellsy.client_id: '%env(SELLSY_CLIENT_ID)%'
     sellsy.client_secret: '%env(SELLSY_CLIENT_SECRET)%'
-    sellsy.api_base_url: '%env(SELLSY_API_BASE_URL)%'
     sellsy.auth_url: '%env(SELLSY_AUTH_URL)%'
 
 services:
