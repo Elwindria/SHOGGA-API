@@ -30,9 +30,9 @@ final class GameContestSubmissionService
     {
         if ($payload["hasWon"]) {
             if ($payload["rewardType"] === "-10%") {
-                $this->brevoService->sendEmailByTemplateId($payload["email"], 10);
+                $this->brevoService->sendEmailByTemplateId($payload["email"], 57);
             } else if ($payload["rewardType"] === "-20%") {
-                $this->brevoService->sendEmailByTemplateId($payload["email"], 11);
+                $this->brevoService->sendEmailByTemplateId($payload["email"], 58);
             }
         }
     }
