@@ -25,10 +25,6 @@ final class GameContestSubmissionValidator
             throw new \InvalidArgumentException('Email invalide.');
         }
 
-        if ($this->sellsyCompanyService->companyExistsByEmail($email)) {
-            throw new \RuntimeException('Cet email existe déjà dans Sellsy.');
-        }
-
         if ($this->sellsyIndividualService->individualExistsByEmail($email)) {
             throw new \RuntimeException('Cet email existe déjà dans Sellsy.');
         }
