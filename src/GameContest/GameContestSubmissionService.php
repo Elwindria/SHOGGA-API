@@ -2,12 +2,14 @@
 
 namespace App\GameContest;
 
+use App\Brevo\BrevoService;
 use App\Sellsy\Individual\SellsyIndividualService;
 
 final class GameContestSubmissionService
 {
     public function __construct(
         private SellsyIndividualService $sellsyIndividualService,
+        private BrevoService $brevoService,
     ) {
     }
 
@@ -27,9 +29,11 @@ final class GameContestSubmissionService
     public function handleHasWon(array $payload): void
     {
         if ($payload["hasWon"]) {
-            if ($payload["rewardType"] === "-10%" || $payload["rewardType"] === "-20%") {
-                //envoyé le mail via brevo ?
-            }    
+            if ($payload["rewardType"] === "-10%") {
+                $this->brevoService->sendEmailByTemplateId($payload["email"], 10);
+            } else if ($payload["rewardType"] === "-20%") {
+                $this->brevoService->sendEmailByTemplateId($payload["email"], 11);
+            }
         }
     }
 }
