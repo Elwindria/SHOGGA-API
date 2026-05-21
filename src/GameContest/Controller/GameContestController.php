@@ -68,6 +68,7 @@ final class GameContestController extends AbstractController
         $payload = json_decode($request->getContent(), true);
 
         // payload {
+        //      "email": "emaim@exemple.com",
         //     "hasWon": true,
         //     "rewardType": "discount",
         // }
