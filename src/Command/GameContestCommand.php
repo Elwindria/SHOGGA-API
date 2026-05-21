@@ -26,7 +26,7 @@ final class GameContestCommand extends Command
         $payload = [
             'email' => 'p.lopez2000@laposte.net',
             'hasWon' => true,
-            'rewardType' => '-10%',
+            'rewardType' => '-20%',
             'newsletter' => false,
             'rgpd' => true,
         ];
@@ -35,7 +35,7 @@ final class GameContestCommand extends Command
             // $this->submissionService->handle($payload);
             $this->submissionService->handleHasWon($payload);
 
-            $output->writeln('<info>Prospect créé avec succès.</info>');
+            $output->writeln('<info>Prospect créé avec succès + envoit du mail</info>');
 
             return Command::SUCCESS;
         } catch (\Throwable $e) {

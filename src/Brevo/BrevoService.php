@@ -24,7 +24,7 @@ class BrevoService
         int $id
     ): bool {
         try {
-            $this->client->transactionalEmails->sendTransacEmail(
+            $response = $this->client->transactionalEmails->sendTransacEmail(
                 new SendTransacEmailRequest([
                     'to' => [
                         new SendTransacEmailRequestToItem([
@@ -35,9 +35,10 @@ class BrevoService
                 ])
             );
 
-            $this->logger->info('Brevo email envoyé', [
+            $this->logger->info('Email Brevo envoyé', [
                 'email' => $email,
                 'template_id' => $id,
+                'response' => $response,
             ]);
 
             return true;
