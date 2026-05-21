@@ -4,7 +4,6 @@ namespace App\Brevo;
 
 use Brevo\Brevo;
 use Psr\Log\LoggerInterface;
-use Throwable;
 use Brevo\TransactionalEmails\Requests\SendTransacEmailRequest;
 use Brevo\TransactionalEmails\Types\SendTransacEmailRequestToItem;
 
@@ -33,7 +32,6 @@ class BrevoService
                         ]),
                     ],
                     'templateId' => $id,
-                    'params' => [],
                 ])
             );
 
@@ -44,13 +42,13 @@ class BrevoService
 
             return true;
 
-        } catch (Throwable $e) {
-
-            $this->logger->error('Erreur envoi email Brevo', [
+        } catch (\Brevo\Exceptions\BrevoApiException $e) {
+            $this->logger->error('Erreur API Brevo', [
                 'email' => $email,
                 'template_id' => $id,
+                'status_code' => $e->getCode(),
                 'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
+                'body' => $e->getBody(),
             ]);
 
             return false;

@@ -24,7 +24,7 @@ final class GameContestCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $payload = [
-            'email' => 'p.lopez@laposte.net',
+            'email' => 'p.lopez2000@laposte.net',
             'hasWon' => true,
             'rewardType' => '-10%',
             'newsletter' => false,
