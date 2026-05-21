@@ -2,23 +2,18 @@
 
 namespace App\Brevo;
 
-use Brevo\Client\Api\TransactionalEmailsApi;
-use Brevo\Client\Configuration;
-use GuzzleHttp\Client;
-use Brevo\Client\Model\SendSmtpEmail;
+use Brevo\Brevo;
+use Brevo\TransactionalEmails\Requests\SendTransacEmailRequest;
+use Brevo\TransactionalEmails\Types\SendTransacEmailRequestToItem;
 
 class BrevoService
 {
-    private TransactionalEmailsApi $apiInstance;
+    private Brevo $client;
 
     public function __construct()
     {
-        $config = Configuration::getDefaultConfiguration()
-            ->setApiKey('api-key', $_ENV['BREVO_API_KEY']);
-
-        $this->apiInstance = new TransactionalEmailsApi(
-            new Client(),
-            $config
+        $this->client = new Brevo(
+            apiKey: $_ENV['BREVO_API_KEY']
         );
     }
 
@@ -26,14 +21,16 @@ class BrevoService
         string $email,
         int $id
     ): void {
-        $sendSmtpEmail = new SendSmtpEmail([
-            'to' => [[
-                'email' => $email,
-            ]],
-            'templateId' => $id,
-            'params' => [],
-        ]);
-
-        $this->apiInstance->sendTransacEmail($sendSmtpEmail);
+        $this->client->transactionalEmails->sendTransacEmail(
+            new SendTransacEmailRequest([
+                'to' => [
+                    new SendTransacEmailRequestToItem([
+                        'email' => $email,
+                    ]),
+                ],
+                'templateId' => $id,
+                'params' => [],
+            ])
+        );
     }
 }

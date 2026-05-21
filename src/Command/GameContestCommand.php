@@ -24,15 +24,16 @@ final class GameContestCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $payload = [
-            'email' => 'test@example.com',
+            'email' => 'p.lopez@laposte.net',
             'hasWon' => true,
-            'rewardType' => 'discount',
-            'newsletter' => true,
+            'rewardType' => '-10%',
+            'newsletter' => false,
             'rgpd' => true,
         ];
 
         try {
-            $this->submissionService->handle($payload);
+            // $this->submissionService->handle($payload);
+            $this->submissionService->handleHasWon($payload);
 
             $output->writeln('<info>Prospect créé avec succès.</info>');
 
