@@ -33,14 +33,7 @@ final class GameContestController extends AbstractController
                 $this->sanitizer->sanitizeEmail($payload['email'])
             );
         }
-
-        // Exemple payload
-        // payload {
-        //     "email": "test@example.com",
-        //     "newsletter": true,
-        //     "rgpd": true
-        // }
-
+        
         try {
             //Vérifier si Email non vide / Valide / N'existe pas déjà dans la base de donnée (donc il a déjà jouer)
             $this->gameContestSubmissionValidator->validateEmail($payload);
@@ -66,12 +59,6 @@ final class GameContestController extends AbstractController
     public function hasWon(Request $request): JsonResponse
     {
         $payload = json_decode($request->getContent(), true);
-
-        // payload {
-        //      "email": "emaim@exemple.com",
-        //     "hasWon": true,
-        //     "rewardType": "discount",
-        // }
 
         try {
             $this->gameContestSubmissionService->handleHasWon($payload);
