@@ -46,8 +46,7 @@ final class GameContestController extends AbstractController
             return new JsonResponse([
                 'success' => true,
             ]);
-        } catch (\RuntimeException $e) {
-
+        }  catch (\Throwable $e) {
             return new JsonResponse([
                 'success' => false,
                 'message' => $e->getMessage(),
@@ -66,8 +65,7 @@ final class GameContestController extends AbstractController
             return new JsonResponse([
                 'success' => true,
             ]);
-        } catch (\RuntimeException $e) {
-
+        }  catch (\Throwable $e) {
             return new JsonResponse([
                 'success' => false,
                 'message' => $e->getMessage(),
