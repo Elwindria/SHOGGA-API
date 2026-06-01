@@ -2,13 +2,11 @@
 
 namespace App\GameContest\Validator;
 
-use App\Sellsy\Company\SellsyCompanyService;
 use App\Sellsy\Individual\SellsyIndividualService;
 
 final class GameContestSubmissionValidator
 {
     public function __construct(
-        private SellsyCompanyService $sellsyCompanyService,
         private SellsyIndividualService $sellsyIndividualService,
     ) {
     }
