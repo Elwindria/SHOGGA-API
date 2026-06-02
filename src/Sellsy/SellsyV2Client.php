@@ -46,11 +46,11 @@ final class SellsyV2Client
 
         $status = $response->getStatusCode();
 
-        if ($status === 204) {
+        $content = $response->getContent(false);
+
+        if ($status === 204 || $content === '') {
             return [];
         }
-
-        $content = $response->getContent(false);
 
         $data = json_decode($content, true);
 
