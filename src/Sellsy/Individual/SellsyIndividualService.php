@@ -22,6 +22,22 @@ final class SellsyIndividualService
         return !empty($response['data']);
     }
 
+    public function findExpiredIndividualsFromGameContest(): array
+    {
+        $threeYearsAgo = new \DateTimeImmutable('-3 years');
+
+        return $this->sellsyV2Client->request('POST', '/individuals/search', [
+            'filters' => [
+                'type' => 'prospect',
+                'name' => 'Jeu Concours',
+                'created' => [
+                    'end' => $threeYearsAgo->format(\DateTimeInterface::ATOM),
+                ],
+                'is_archived' => false,
+            ],
+        ]);
+    }
+
     public function createIndividualProspectFromGameContest(string $email): array
     {
         return $this->sellsyV2Client->request('POST', '/individuals', [
