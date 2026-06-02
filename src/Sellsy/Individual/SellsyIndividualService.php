@@ -29,7 +29,6 @@ final class SellsyIndividualService
         return $this->sellsyV2Client->request('POST', '/individuals/search', [
             'filters' => [
                 'type' => 'prospect',
-                'name' => 'Jeu Concours',
                 'reference' => [
                     'SHOGGA_GAME_CONTEST',
                 ],
