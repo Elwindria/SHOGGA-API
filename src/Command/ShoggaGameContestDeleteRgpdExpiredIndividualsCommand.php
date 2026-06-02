@@ -8,17 +8,18 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use App\Sellsy\Individual\SellsyIndividualService;
+use Psr\Log\LoggerInterface;
 
 #[AsCommand(
     name: 'app:shogga:game-contest:delete-rgpd-expired-individuals',
-    description: 'Delete expired individuals from GameContest (3 year) cause of RGPD',
+    description: 'Delete expired SHOGGA Game Contest individuals after 3 years for GDPR compliance',
 )]
 class ShoggaGameContestDeleteRgpdExpiredContactsCommand extends Command
 {
     public function __construct(
         private readonly SellsyIndividualService $sellsyIndividualService,
-    )
-    {
+        private readonly LoggerInterface $logger,
+    ) {
         parent::__construct();
     }
 
@@ -27,22 +28,52 @@ class ShoggaGameContestDeleteRgpdExpiredContactsCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $count = 0;
 
-        $expiredIndividuals = $this->sellsyIndividualService->findExpiredIndividualsFromGameContest();
+        $this->logger->info(
+            '[Sellsy][GameContest] Starting SHOGGA Game Contest RGPD cleanup'
+        );
 
-        foreach ($expiredIndividuals['data'] as $individual) {
-            $this->sellsyIndividualService->deleteIndividual($individual['id']);
-            $count++;
+        try {
+            $expiredIndividuals = $this->sellsyIndividualService->findExpiredIndividualsFromGameContest();
+
+            foreach ($expiredIndividuals['data'] ?? [] as $individual) {
+                $this->sellsyIndividualService->deleteIndividual($individual['id']);
+                $count++;
+
+                $this->logger->info(
+                    '[Sellsy][GameContest] Deleted expired SHOGGA individual',
+                    [
+                        'individual_id' => $individual['id'],
+                        'email' => $individual['email'] ?? null,
+                    ]
+                );
+            }
+
+            if ($count === 0) {
+                $io->success('Aucun particulier expiré du jeu concours SHOGGA trouvé.');
+            } else {
+                $io->success(sprintf(
+                    '%d contacts du jeu concours SHOGGA ont été supprimés (durée de conservation dépassée).',
+                    $count,
+                ));
+            }
+
+            $this->logger->info(
+                '[Sellsy][GameContest] SHOGGA Game Contest RGPD cleanup completed',
+                [
+                    'deleted_count' => $count,
+                ]
+            );
+
+            return Command::SUCCESS;
+        } catch (\Throwable $e) {
+            $this->logger->error(
+                '[Sellsy][GameContest] SHOGGA Game Contest RGPD cleanup failed',
+                [
+                    'exception' => $e,
+                ]
+            );
+
+            return Command::FAILURE;
         }
-
-        if ($count === 0) {
-            $io->success('Aucun particulier expiré du jeu concours SHOGGA trouvé.');
-        } else {
-            $io->success(sprintf(
-                '%d contacts du jeu concours SHOGGA ont été supprimés (durée de conservation dépassée).',
-                $count,
-            ));
-        }
-
-        return Command::SUCCESS;
     }
 }
