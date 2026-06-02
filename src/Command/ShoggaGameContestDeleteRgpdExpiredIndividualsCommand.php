@@ -25,13 +25,23 @@ class ShoggaGameContestDeleteRgpdExpiredContactsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+        $count = 0;
+
         $expiredIndividuals = $this->sellsyIndividualService->findExpiredIndividualsFromGameContest();
 
         foreach ($expiredIndividuals['data'] as $individual) {
             $this->sellsyIndividualService->deleteIndividual($individual['id']);
+            $count++;
         }
 
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        if ($count === 0) {
+            $io->success('Aucun particulier expiré du jeu concours SHOGGA trouvé.');
+        } else {
+            $io->success(sprintf(
+                '%d contacts du jeu concours SHOGGA ont été supprimés (durée de conservation dépassée).',
+                $count,
+            ));
+        }
 
         return Command::SUCCESS;
     }
