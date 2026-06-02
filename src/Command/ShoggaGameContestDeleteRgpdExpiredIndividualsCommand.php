@@ -9,8 +9,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'app:shogga:game-contest:delete-rgpd-expired-contacts',
-    description: 'Add a short description for your command',
+    name: 'app:shogga:game-contest:delete-rgpd-expired-individuals',
+    description: 'Delete expired individuals from GameContest (3 year) cause of RGPD',
 )]
 class ShoggaGameContestDeleteRgpdExpiredContactsCommand extends Command
 {
