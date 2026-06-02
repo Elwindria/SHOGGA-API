@@ -3,7 +3,6 @@
 namespace App\Sellsy\Individual;
 
 use App\Sellsy\SellsyV2Client;
-use App\Sellsy\SmartTags\SellsySmartTagsService;
 
 final class SellsyIndividualService
 {
