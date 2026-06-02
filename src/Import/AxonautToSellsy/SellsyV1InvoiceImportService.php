@@ -42,7 +42,7 @@ final class SellsyV1InvoiceImportService
                     $count["Erreur"]++;
                 };
             }catch (\Throwable $e) {
-                $this->logger->error('Erreur pré-payload', [
+                $this->logger->error('[Sellsy][Import] Erreur pré-payload', [
                     'Facture n°' => $invoiceNumber,
                     'message' => $e->getMessage(),
                 ]);
@@ -84,7 +84,7 @@ final class SellsyV1InvoiceImportService
         $staffId = $this->sellsyStaffMappingResolver->getStaffIdofPierreMigard();
 
         if ($thirdId === null) {
-            $this->missingClientsLogger->info('Client manquant', [
+            $this->missingClientsLogger->info('[Sellsy][Import] Client manquant', [
                 'invoice_number' => $invoiceNumber,
                 'customer_name' => $first->customerName,
                 'customer_email' => $first->customerEmail,
@@ -98,28 +98,28 @@ final class SellsyV1InvoiceImportService
         try {
             $response = $this->client->call($payload);
 
-            $this->logger->info('Réponse Sellsy V1 OK', [
+            $this->logger->info('[Sellsy][Import] Réponse Sellsy V1 OK', [
                 'invoice_number' => $invoiceNumber,
                 'response' => $response,
             ]);
 
             $this->validateInvoice($response['doc_id'], $first->invoiceDate);
 
-            $this->logger->info('Réponse Sellsy V1 OK', [
+            $this->logger->info('[Sellsy][Import] Réponse Sellsy V1 OK', [
                 'invoice_number' => $invoiceNumber,
                 'response' => $response,
             ]);
 
             $this->createInvoicePayment($response['doc_id'], $lines);
 
-            $this->logger->info('Réponse Sellsy V1 OK', [
+            $this->logger->info('[Sellsy][Import] Réponse Sellsy V1 OK', [
                 'invoice_number' => $invoiceNumber,
                 'response' => $response,
             ]);
 
             return true;
         } catch (\Throwable $e) {
-            $this->logger->info('erreur', [
+            $this->logger->info('[Sellsy][Import] erreur facture', [
                 'invoice_number' => $invoiceNumber,
                 'response' => $e->getMessage(),
             ]);

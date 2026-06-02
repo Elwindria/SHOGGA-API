@@ -35,11 +35,11 @@ final class SellsyTaxService
             try {
                 $response = $this->client->call($payload);
 
-                $this->logger->info('Taxes Sellsy récupérées depuis API');
+                $this->logger->info('[Sellsy] Taxes Sellsy récupérées depuis API');
 
                 return $response;
             } catch (\Throwable $e) {
-                $this->logger->error('Erreur récupération taxes Sellsy V1', [
+                $this->logger->error('[Sellsy] Erreur récupération taxes Sellsy V1', [
                     'error' => $e->getMessage(),
                 ]);
 

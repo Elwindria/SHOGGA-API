@@ -61,7 +61,7 @@ final class SellsyV1Client
 
         if (($data['status'] ?? '') !== 'success') {
 
-            $this->logger->error('Réponse Sellsy V1 en erreur', [
+            $this->logger->error('[Sellsy] Réponse Sellsy V1 en erreur', [
                 'payload' => $payload,
                 'response' => $data,
             ]);

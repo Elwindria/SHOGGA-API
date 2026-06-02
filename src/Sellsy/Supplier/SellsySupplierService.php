@@ -33,11 +33,11 @@ final class SellsySupplierService
             try {
                 $response = $this->client->call($payload);
 
-                $this->logger->info('Fournisseurs Sellsy récupérées depuis API');
+                $this->logger->info('[Sellsy] Fournisseurs Sellsy récupérées depuis API');
 
                 return $response;
             } catch (\Throwable $e) {
-                $this->logger->error('Erreur récupération des forunisseurs Sellsy V1', [
+                $this->logger->error('[Sellsy] Erreur récupération des forunisseurs Sellsy V1', [
                     'error' => $e->getMessage(),
                 ]);
 

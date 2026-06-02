@@ -33,11 +33,11 @@ final class SellsyPayMediumsService
             try {
                 $response = $this->client->call($payload);
 
-                $this->logger->info('Moyen de payment Sellsy récupérées depuis API');
+                $this->logger->info('[Sellsy] Moyen de payment Sellsy récupérées depuis API');
 
                 return $response;
             } catch (\Throwable $e) {
-                $this->logger->error('Erreur récupération des moyen de payment Sellsy V1', [
+                $this->logger->error('[Sellsy] Erreur récupération des moyen de payment Sellsy V1', [
                     'error' => $e->getMessage(),
                 ]);
 

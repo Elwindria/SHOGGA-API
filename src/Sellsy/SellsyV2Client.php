@@ -52,7 +52,7 @@ final class SellsyV2Client
 
         if ($status >= 400) {
 
-            $this->logger->error('Erreur Sellsy V2', [
+            $this->logger->error('[Sellsy] Erreur Sellsy V2', [
                 'method' => $method,
                 'endpoint' => $endpoint,
                 'payload' => $payload,

@@ -35,7 +35,7 @@ class BrevoService
                 ])
             );
 
-            $this->logger->info('Email Brevo envoyé', [
+            $this->logger->info('[Brevo] Email Brevo envoyé', [
                 'email' => $email,
                 'template_id' => $id,
                 'response' => $response,
@@ -44,7 +44,7 @@ class BrevoService
             return true;
 
         } catch (\Brevo\Exceptions\BrevoApiException $e) {
-            $this->logger->error('Erreur API Brevo', [
+            $this->logger->error('[Brevo] Erreur API Brevo', [
                 'email' => $email,
                 'template_id' => $id,
                 'status_code' => $e->getCode(),

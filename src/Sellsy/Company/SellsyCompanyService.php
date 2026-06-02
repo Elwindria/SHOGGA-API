@@ -27,11 +27,11 @@ final class SellsyCompanyService
             try {
                 $response = $this->client->request('GET', '/companies', []);
 
-                $this->logger->info('Recherche compagnies Sellsy V2', []);
+                $this->logger->info('[Sellsy] Recherche compagnies Sellsy V2', []);
 
                 return $response;
             } catch (\Throwable $e) {
-                $this->logger->error('Erreur recherche compagnies Sellsy V2', [
+                $this->logger->error('[Sellsy] Erreur recherche compagnies Sellsy V2', [
                     'error' => $e->getMessage(),
                 ]);
 
@@ -49,13 +49,13 @@ final class SellsyCompanyService
                 ],
             ]);
 
-            $this->logger->info('Recherche compagnie Sellsy V2 par email', [
+            $this->logger->info('[Sellsy] Recherche compagnie Sellsy V2 par email', [
                 'email' => $email,
             ]);
 
             return $response;
         } catch (\Throwable $e) {
-            $this->logger->error('Erreur recherche compagnie Sellsy V2', [
+            $this->logger->error('[Sellsy] Erreur recherche compagnie Sellsy V2', [
                 'email' => $email,
                 'error' => $e->getMessage(),
             ]);

@@ -35,11 +35,11 @@ final class SellsyCatalogueService
             try {
                 $response = $this->client->call($payload);
 
-                $this->logger->info('Catalogue Sellsy récupérées depuis API');
+                $this->logger->info('[Sellsy] Catalogue Sellsy récupérées depuis API');
 
                 return $response;
             } catch (\Throwable $e) {
-                $this->logger->error('Erreur récupération du Catalogue Sellsy V1', [
+                $this->logger->error('[Sellsy] Erreur récupération du Catalogue Sellsy V1', [
                     'error' => $e->getMessage(),
                 ]);
 
