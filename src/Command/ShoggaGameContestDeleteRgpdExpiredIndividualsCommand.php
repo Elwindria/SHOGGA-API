@@ -7,6 +7,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use App\Sellsy\Individual\SellsyIndividualService;
 
 #[AsCommand(
     name: 'app:shogga:game-contest:delete-rgpd-expired-individuals',
@@ -24,6 +25,9 @@ class ShoggaGameContestDeleteRgpdExpiredContactsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+        $expiredIndividuals = $this->sellsyIndividualService->findExpiredIndividualsFromGameContest();
+
+
 
         $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
 
