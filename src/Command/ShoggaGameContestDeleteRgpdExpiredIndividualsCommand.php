@@ -14,7 +14,7 @@ use Psr\Log\LoggerInterface;
     name: 'app:shogga:game-contest:delete-rgpd-expired-individuals',
     description: 'Delete expired SHOGGA Game Contest individuals after 3 years for GDPR compliance',
 )]
-class ShoggaGameContestDeleteRgpdExpiredContactsCommand extends Command
+class ShoggaGameContestDeleteRgpdExpiredIndividualsCommand extends Command
 {
     public function __construct(
         private readonly SellsyIndividualService $sellsyIndividualService,
