@@ -48,6 +48,10 @@ final class SellsyV2Client
 
         $content = $response->getContent(false);
 
+        if ($status === 204 || $content === '') {
+            return [];
+        }
+
         $data = json_decode($content, true);
 
         if ($status >= 400) {
