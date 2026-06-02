@@ -27,7 +27,9 @@ class ShoggaGameContestDeleteRgpdExpiredContactsCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $expiredIndividuals = $this->sellsyIndividualService->findExpiredIndividualsFromGameContest();
 
-
+        foreach ($expiredIndividuals['data'] as $individual) {
+            $this->sellsyIndividualService->deleteIndividual($individual['id']);
+        }
 
         $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
 

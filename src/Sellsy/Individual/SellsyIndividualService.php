@@ -55,6 +55,14 @@ final class SellsyIndividualService
         ]);
     }
 
+    public function deleteIndividual(int $id): void
+    {
+        $this->sellsyV2Client->request(
+            'DELETE',
+            "/individuals/$id"
+        );
+    }
+
     public function linkSmartTagToIndividual(int $id): array
     {
         return $this->sellsyV2Client->request('POST', 'individuals/'.$id.'/smart-tags', [
