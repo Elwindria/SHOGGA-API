@@ -30,6 +30,9 @@ final class SellsyIndividualService
             'filters' => [
                 'type' => 'prospect',
                 'name' => 'Jeu Concours',
+                'reference' => [
+                    'SHOGGA_GAME_CONTEST',
+                ],
                 'created' => [
                     'end' => $threeYearsAgo->format(\DateTimeInterface::ATOM),
                 ],
@@ -44,6 +47,7 @@ final class SellsyIndividualService
             'type' => 'prospect',
             'first_name' => 'Jeu',
             'last_name' => 'Concours',
+            'reference' => 'SHOGGA_GAME_CONTEST',
             'email' => $email,
             'note' => "Prospect créer via le formulaire du jeu concours SHOGGA (des salons)",
             "marketing_campaigns_subscriptions" => [
