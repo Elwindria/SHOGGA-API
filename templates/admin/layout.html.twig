@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Dashboard SHOGGA{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/admin.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="dashboard-sidebar">
+            <div class="dashboard-brand">SHOGGA</div>
+
+            <nav class="dashboard-nav">
+                <a href="{{ path('dashboard_home') }}" class="active">Dashboard</a>
+                <a href="#">Logs</a>
+                <a href="{{ path('app_logout') }}">Déconnexion</a>
+            </nav>
+        </aside>
+
+        <main class="dashboard-main">
+            {% block body %}{% endblock %}
+        </main>
+    </div>
+</body>
+</html>
