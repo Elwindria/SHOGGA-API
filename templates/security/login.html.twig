@@ -4,54 +4,66 @@
     <meta charset="UTF-8">
     <title>Connexion admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/assets/admin.css">
+    <link rel="stylesheet" href="{{ asset('styles/security.css') }}">
 </head>
 <body>
-    <main class="login-page">
-        <section class="login-card">
-            <h1 class="login-title">Connexion</h1>
-            <p class="login-subtitle">Accès administrateur SHOGGA</p>
 
-            {% if error %}
-                <div class="alert-error">
-                    Identifiants invalides.
-                </div>
-            {% endif %}
+    <div class="login-card">
 
-            <form method="post" action="{{ path('app_login') }}">
-                <div class="form-group">
-                    <label class="form-label" for="username">Email</label>
-                    <input
-                        type="email"
-                        id="username"
-                        name="_username"
-                        class="form-control"
-                        value="{{ last_username }}"
-                        autocomplete="email"
-                        required
-                        autofocus
-                    >
-                </div>
+        <img class="login-logo" src="https://shogga.com/wp-content/themes/yootheme/cache/33/Logo-Premium-noir-331da060.avif">
 
-                <div class="form-group">
-                    <label class="form-label" for="password">Mot de passe</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="_password"
-                        class="form-control"
-                        autocomplete="current-password"
-                        required
-                    >
-                </div>
+        <p class="login-subtitle">
+            Connexion administrateur
+        </p>
 
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        {% if error %}
+            <div class="alert-error">
+                Identifiants invalides
+            </div>
+        {% endif %}
 
-                <button class="btn-primary" type="submit">
-                    Se connecter
-                </button>
-            </form>
-        </section>
-    </main>
+        <form method="post">
+
+            <div class="form-group">
+                <label class="form-label">
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    name="_username"
+                    value="{{ last_username }}"
+                    class="form-control"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">
+                    Mot de passe
+                </label>
+
+                <input
+                    type="password"
+                    name="_password"
+                    class="form-control"
+                    required
+                >
+            </div>
+
+            <input
+                type="hidden"
+                name="_csrf_token"
+                value="{{ csrf_token('authenticate') }}"
+            >
+
+            <button class="btn-primary">
+                Se connecter
+            </button>
+
+        </form>
+
+    </div>
+
 </body>
 </html>
