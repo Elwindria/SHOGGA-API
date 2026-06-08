@@ -1,48 +1,74 @@
 <?php
 
-namespace App\Command;
+namespace App\Security\Command;
 
+use App\Security\Entity\User;
+use App\Security\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[AsCommand(
     name: 'app:create-admin',
-    description: 'Add a short description for your command',
+    description: 'Create an admin user',
 )]
-class CreateAdminCommand extends Command
+final class CreateAdminCommand extends Command
 {
-    public function __construct()
-    {
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly UserRepository $userRepository,
+        private readonly UserPasswordHasherInterface $passwordHasher,
+    ) {
         parent::__construct();
     }
 
     protected function configure(): void
     {
-        $this
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
-        ;
+        $this->addArgument('email', InputArgument::REQUIRED, 'Admin email');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $arg1 = $input->getArgument('arg1');
 
-        if ($arg1) {
-            $io->note(sprintf('You passed an argument: %s', $arg1));
+        $email = (string) $input->getArgument('email');
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $io->error('Email invalide.');
+
+            return Command::FAILURE;
         }
 
-        if ($input->getOption('option1')) {
-            // ...
+        if ($this->userRepository->findOneBy(['email' => $email])) {
+            $io->error('Un utilisateur existe déjà avec cet email.');
+
+            return Command::FAILURE;
         }
 
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        $plainPassword = $io->askHidden('Mot de passe admin');
+
+        if ($plainPassword === null) {
+            $io->error('Le mot de passe ne peut pas être vide.');
+
+            return Command::FAILURE;
+        }
+
+        $user = new User();
+        $user->setEmail($email);
+        $user->setRoles(['ROLE_ADMIN']);
+        $user->setPassword(
+            $this->passwordHasher->hashPassword($user, $plainPassword)
+        );
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        $io->success('Admin créé avec succès.');
 
         return Command::SUCCESS;
     }
