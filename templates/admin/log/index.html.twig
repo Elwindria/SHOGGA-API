@@ -11,8 +11,8 @@
             </div>
         </div>
 
-        <form class="log-filters" method="get">
-            <select name="file" class="form-control">
+        <form class="log-filters" method="get" id="logFiltersForm">
+            <select name="file" class="form-control" onchange="this.form.submit()">
                 {% for key, filename in files %}
                     <option value="{{ key }}" {{ filter.fileKey == key ? 'selected' : '' }}>
                         {{ key == 'current' ? 'Actuel' : key }}
@@ -20,7 +20,7 @@
                 {% endfor %}
             </select>
 
-            <select name="level" class="form-control">
+            <select name="level" class="form-control" onchange="this.form.submit()">
                 <option value="">Tous niveaux</option>
                 <option value="error" {{ filter.level == 'error' ? 'selected' : '' }}>Error</option>
                 <option value="warning" {{ filter.level == 'warning' ? 'selected' : '' }}>Warning</option>
