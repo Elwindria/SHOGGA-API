@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Security\Command;
+namespace App\Command;
 
 use App\Security\Entity\User;
 use App\Security\Repository\UserRepository;
@@ -37,6 +37,12 @@ final class CreateAdminCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $email = (string) $input->getArgument('email');
+
+        if ($email === null) {
+            $io->error('Ajouter un email en argumant à la commande svp ex: php bin/console app:create-admin ton-email@example.com');
+
+            return Command::FAILURE;
+        }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $io->error('Email invalide.');
