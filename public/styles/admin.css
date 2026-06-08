@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+:root {
+    --admin-blue: #151850;
+    --admin-bg: #f7f7f7;
+    --admin-white: #ffffff;
+    --admin-radius: 24px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    background: var(--admin-bg);
+    color: var(--admin-blue);
+}
+
+.login-page {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: var(--admin-bg);
+}
+
+.login-card {
+    width: 100%;
+    max-width: 440px;
+    padding: 40px;
+    border-radius: var(--admin-radius);
+    background: var(--admin-white);
+    box-shadow: 0 20px 60px rgba(21, 24, 80, 0.12);
+}
+
+.login-title {
+    margin: 0 0 8px;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.login-subtitle {
+    margin: 0 0 32px;
+    opacity: 0.7;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid rgba(21, 24, 80, 0.15);
+    border-radius: 16px;
+    font-family: inherit;
+    font-size: 15px;
+    outline: none;
+}
+
+.form-control:focus {
+    border-color: var(--admin-blue);
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 14px 18px;
+    border: 0;
+    border-radius: 16px;
+    background: var(--admin-blue);
+    color: #ffffff;
+    font-family: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.alert-error {
+    margin-bottom: 20px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: #ffe8e8;
+    color: #8a1f1f;
+    font-size: 14px;
+}
+
+.dashboard-layout {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    background: var(--admin-bg);
+}
+
+.dashboard-sidebar {
+    padding: 28px;
+    background: var(--admin-blue);
+    color: #ffffff;
+}
+
+.dashboard-brand {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 40px;
+}
+
+.dashboard-nav a {
+    display: block;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    border-radius: 16px;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.dashboard-nav a:hover,
+.dashboard-nav a.active {
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.dashboard-main {
+    padding: 32px;
+}
+
+.dashboard-card {
+    padding: 32px;
+    border-radius: var(--admin-radius);
+    background: #ffffff;
+    box-shadow: 0 20px 60px rgba(21, 24, 80, 0.08);
+}
