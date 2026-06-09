@@ -50,4 +50,5 @@ final class GameContestRGPDCleanupService
 
         return $deletedCount;
     }
+    
 }
