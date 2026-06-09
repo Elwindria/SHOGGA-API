@@ -12,6 +12,7 @@
         </div>
 
         <form class="log-filters" method="get" id="logFiltersForm">
+            <input type="hidden" name="page" value="1">
             <select name="file" class="form-control" onchange="this.form.submit()">
                 {% for key, filename in files %}
                     <option value="{{ key }}" {{ filter.fileKey == key ? 'selected' : '' }}>
