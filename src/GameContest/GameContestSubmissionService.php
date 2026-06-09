@@ -23,6 +23,9 @@ final class GameContestSubmissionService
 
             //ratache un smartTag "jeu concours"
             $this->sellsyIndividualService->linkSmartTagToIndividual($id);
+
+            //Envoit le mail de Bienvenue
+            $this->brevoService->sendEmailByTemplateId($payload["email"], 61);
         }
     }
 
