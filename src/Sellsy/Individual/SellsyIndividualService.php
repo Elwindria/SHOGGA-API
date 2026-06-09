@@ -63,11 +63,11 @@ final class SellsyIndividualService
         );
     }
 
-    public function linkSmartTagToIndividual(int $id): array
+    public function linkSmartTagToIndividual(int $id, string $value): array
     {
         return $this->sellsyV2Client->request('POST', 'individuals/'.$id.'/smart-tags', [
             [
-                'value' => 'Jeu concours',
+                'value' => $value,
             ]
         ]);
     }

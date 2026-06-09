@@ -109,6 +109,4 @@ final class GameContestController extends AbstractController
             ], 400);
         }
     }
-
-
 }
