@@ -19,4 +19,12 @@ final class GameContestEmailAttemptRepository extends ServiceEntityRepository
             'email' => strtolower(trim($email)),
         ]) !== null;
     }
+
+    public function deleteAll(): int
+    {
+        return $this->createQueryBuilder('attempt')
+            ->delete()
+            ->getQuery()
+            ->execute();
+    }
 }

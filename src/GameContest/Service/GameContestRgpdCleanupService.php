@@ -4,12 +4,14 @@ namespace App\GameContest\Service;
 
 use App\Sellsy\Individual\SellsyIndividualService;
 use Psr\Log\LoggerInterface;
+use App\GameContest\Repository\GameContestEmailAttemptRepository;
 
 final class GameContestExpiredIndividualsCleaner
 {
     public function __construct(
         private readonly SellsyIndividualService $sellsyIndividualService,
         private readonly LoggerInterface $logger,
+        private readonly GameContestEmailAttemptRepository $gameContestEmailAttemptRepository,
     ) {
     }
 
@@ -38,8 +40,14 @@ final class GameContestExpiredIndividualsCleaner
         return $count;
     }
 
-    public function cleanEmailAttempt(): void
+    public function cleanEmailAttempt(): int
     {
-        
+        $deletedCount = $this->gameContestEmailAttemptRepository->deleteAll();
+
+        $this->logger->info('[GameContest] Temporary email attempts cleaned', [
+            'deleted_count' => $deletedCount,
+        ]);
+
+        return $deletedCount;
     }
 }
