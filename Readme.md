@@ -2,11 +2,13 @@
 
 ## Présentation
 
-Ce projet est un service développé avec Symfony dans le cadre de mon stage chez SHOGGA (Licence).
+Ce projet est un service développé avec Symfony dans le cadre de mon stage chez SHOGGA (Licence 3eme année).
 
-Il permet de collecter des leads (emails) lors d’événements (salons, stands, tablettes) et de les transmettre vers les outils CRM et marketing de Shogga.
+Il permet de collecter des leads (emails) lors d’événements (salons, stands, tablettes) et de les transmettre vers les outils CRM et marketing de SHOGGA.
 
-Il agit comme un **hub central** entre une interface de collecte (frontend), des services tiers (Sellsy, Klaviyo) et un **back-office interne** permettant de gérer les données.
+Il agit comme un **hub central** entre une interface de collecte (frontend), des services tiers (Sellsy, Klaviyo, etc.) et un back-office interne permettant de superviser l'application.
+
+Le projet dispose également d'un dashboard d'administration sécurisé permettant notamment la consultation des logs de production, le suivi des traitements automatiques et l'ajout futur d'outils métier.
 
 ---
 
@@ -18,8 +20,8 @@ Ce service a pour but de :
 * Assurer la conformité RGPD (gestion du consentement, traçabilité)
 * Centraliser et structurer les données collectées
 * Transmettre automatiquement les leads vers des outils externes (Sellsy, Klaviyo)
-* Permettre la gestion des leads via une interface backend
-* Fournir une base évolutive pour d’autres besoins métier
+* Fournir un dashboard d'administration pour le suivi technique
+* Permettre l'évolution de la plateforme vers d'autres besoins métier
 
 ---
 
@@ -31,13 +33,24 @@ Le projet est composé de deux parties principales :
 
 * Réception des données (formulaire, webhooks)
 * Validation et traitement des leads
+* Protection contre les abus et le spam
 * Intégration avec des services externes
+* Gestion des traitements métier
 
-### Back-office
+### Dashboard d'administration
 
-* Visualisation des emails collectés
-* Gestion des leads (consultation, suppression, etc.)
-* Outils internes pour le suivi et l’exploitation des données
+Le projet embarque un dashboard d'administration sécurisé accessible aux administrateurs.
+
+Fonctionnalités actuelles :
+
+* Authentification administrateur
+* Consultation des logs de production
+* Recherche dans les logs
+* Filtrage des logs
+* Navigation entre les fichiers de logs quotidiens
+* Suivi des traitements automatiques
+
+Le dashboard a été conçu pour être évolutif et accueillir de nouvelles fonctionnalités métier.
 
 ---
 
@@ -51,21 +64,76 @@ Flux typique :
 4. L’API :
 
    * Valide et nettoie les données
-   * Enregistre le lead
-   * Stocke la preuve du consentement (date, contexte, source)
+   * Vérifie les règles métier
+   * Empêche certains abus (emails temporaires déjà utilisés)
    * Transmet les données aux outils CRM / marketing
-5. Les leads sont consultables et gérables via le back-office
+5. Les traitements automatiques assurent la maintenance quotidienne
+6. Les administrateurs peuvent consulter les logs via le dashboard
 
 ---
 
 ## Fonctionnalités
 
+### API
+
 * Endpoint de collecte d’emails
-* Gestion du consentement RGPD (opt-in explicite)
 * Validation et normalisation des données
+* Gestion du consentement RGPD (opt-in explicite)
+* Protection contre certains abus et tentatives de spam
+* Stockage temporaire d’informations métier
 * Intégration avec des services tiers (Sellsy, Klaviyo)
-* Interface d’administration (backend)
-* Architecture extensible (webhooks, files de traitement, etc.)
+
+### Dashboard
+
+* Authentification administrateur
+* Consultation des logs de production
+* Recherche dans les logs
+* Filtrage des logs
+* Pagination
+* Navigation entre les fichiers de logs journaliers
+
+### Maintenance
+
+* Commandes Symfony dédiées
+* Maintenance quotidienne automatisée via cron
+* Nettoyage RGPD automatisé
+* Nettoyage des données temporaires
+
+---
+
+## Dashboard d'administration
+
+Le dashboard est développé avec Symfony et Twig.
+
+### Fonctionnalités actuelles
+
+* Authentification administrateur
+* Consultation des logs de production
+* Navigation entre les fichiers de logs quotidiens
+* Recherche et filtrage des événements
+* Consultation des traitements de maintenance
+
+### Technologies utilisées
+
+* Symfony Security
+* Twig
+* SQLite
+* Monolog
+
+### Philosophie
+
+Le dashboard est conçu comme une plateforme d'administration évolutive.
+
+Aujourd'hui, la première fonctionnalité disponible est la consultation des logs de production.
+
+À terme, il pourra accueillir :
+
+* Monitoring applicatif
+* Statistiques métier
+* Outils d'administration
+* Gestion des utilisateurs
+* Tableaux de bord personnalisés
+* Outils de support et diagnostic
 
 ---
 
@@ -74,47 +142,90 @@ Flux typique :
 Ce service est conçu pour respecter les obligations légales :
 
 * Consentement explicite requis avant toute collecte
-* Preuve du consentement enregistrée (timestamp, source)
-* Finalité clairement définie (prospection marketing)
-* Possibilité d’implémenter :
+* Preuve du consentement enregistrée
+* Finalité clairement définie
+* Durée de conservation maîtrisée
+* Nettoyage automatisé des données expirées
 
-  * suppression des données
-  * export des données
+Possibilités d'évolution :
+
+* Export des données
+* Droit à l'effacement
+* Gestion avancée des demandes RGPD
+
+---
+
+## Maintenance automatisée
+
+Une commande Symfony centralisée permet d'exécuter les tâches de maintenance quotidiennes.
+
+Exemple :
+
+```bash
+php bin/console app:daily-maintenance
+```
+
+Cette commande est exécutée automatiquement via un cron serveur.
+
+Exemples de tâches :
+
+* Nettoyage RGPD des données expirées
+* Suppression des données temporaires
+* Futures tâches de maintenance métier
 
 ---
 
 ## Stack technique
 
 * **Backend** : Symfony
+* **Frontend Admin** : Twig
 * **API** : REST
-* **Base de données** : à définir
+* **Base de données** : SQLite
+* **Logs** : Monolog
+* **Authentification** : Symfony Security
 * **Intégrations** : Sellsy, Klaviyo
 
 ---
 
-## Structure du projet (exemple)
+## Structure du projet
 
-```
-/src
-  /Controller
-    /Api
-    /Admin
-  /Service
-  /Entity
-  /Repository
-  /Integration
-  /Message
-  /MessageHandler
+```text
+src/
+├── Admin/
+│   ├── Controller/
+│   └── Log/
+│       ├── DTO/
+│       └── Service/
+│
+├── GameContest/
+│   ├── Controller/
+│   ├── Entity/
+│   ├── Repository/
+│   └── Service/
+│
+├── Security/
+│   ├── Entity/
+│   ├── Repository/
+│   └── Controller/
+│
+├── Command/
+│   └── DailyMaintenanceCommand.php
+│
+└── Sellsy/
 ```
 
 ---
 
 ## Évolutions possibles
 
-* Double opt-in (confirmation par email)
-* Dashboard d’administration avancé
+* Dashboard d'administration avancé
+* Monitoring applicatif
+* Visualisation des tâches de maintenance
+* Tableau de bord métier
 * Statistiques et reporting
-* Protection anti-spam
+* Gestion des utilisateurs administrateurs
+* Alertes et notifications
+* Protection anti-spam avancée
 * Système de queue (Messenger)
 * Nouvelles intégrations métier
 
@@ -123,10 +234,17 @@ Ce service est conçu pour respecter les obligations légales :
 ## Nom du projet
 
 Nom interne : **Lead Hub Service**
-Usage : salons, événements, outils internes
+
+Usage :
+
+* Salons
+* Événements
+* Jeux concours
+* Outils internes SHOGGA
 
 ---
 
 ## Auteur
 
-Elwindria (Pierre Lopez)
+**Pierre Lopez**
+Alias **Elwindria**
