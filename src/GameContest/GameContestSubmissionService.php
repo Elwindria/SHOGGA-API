@@ -22,7 +22,7 @@ final class GameContestSubmissionService
             $id = $individual['id'];
 
             //ratache un smartTag "jeu concours"
-            $this->sellsyIndividualService->linkSmartTagToIndividual($id);
+            $this->sellsyIndividualService->linkSmartTagToIndividual($id, "Jeu concours");
 
             //Envoit le mail de Bienvenue
             $this->brevoService->sendEmailByTemplateId($payload["email"], 61);
