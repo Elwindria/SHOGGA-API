@@ -46,3 +46,7 @@ services:
     App\Sellsy\SellsyV2Client:
         arguments:
             $baseUrl: '%env(SELLSY_API_V2_BASE_URL)%'
+
+    App\Admin\Log\Service\LogReader:
+        arguments:
+            $logsDir: '%kernel.logs_dir%'

@@ -1,0 +1,107 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block title %}Logs{% endblock %}
+
+{% block body %}
+    <section class="dashboard-card">
+        <div class="page-header">
+            <div>
+                <h1>Logs production</h1>
+                <p>{{ total }} résultat{{ total > 1 ? 's' : '' }}</p>
+            </div>
+        </div>
+
+        <form class="log-filters" method="get" id="logFiltersForm">
+            <input type="hidden" name="page" value="1">
+            <select name="file" class="form-control" onchange="this.form.submit()">
+                {% for key, filename in files %}
+                    <option value="{{ key }}" {{ filter.fileKey == key ? 'selected' : '' }}>
+                        {{ key == 'current' ? 'Actuel' : key }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <select name="level" class="form-control" onchange="this.form.submit()">
+                <option value="">Tous niveaux</option>
+                <option value="error" {{ filter.level == 'error' ? 'selected' : '' }}>Error</option>
+                <option value="warning" {{ filter.level == 'warning' ? 'selected' : '' }}>Warning</option>
+                <option value="info" {{ filter.level == 'info' ? 'selected' : '' }}>Info</option>
+            </select>
+
+            <input
+                type="text"
+                name="search"
+                class="form-control"
+                placeholder="Rechercher..."
+                value="{{ filter.search }}"
+            >
+
+            <button class="btn-primary btn-fit" type="submit">
+                Filtrer
+            </button>
+        </form>
+
+        <div class="preset-list">
+            <a class="preset-pill {{ filter.preset is empty ? 'active' : '' }}"
+               href="{{ path('dashboard_logs', { file: filter.fileKey, level: filter.level, search: filter.search }) }}">
+                Tous
+            </a>
+
+            {% for key, label in presets %}
+                <a class="preset-pill {{ filter.preset == key ? 'active' : '' }}"
+                   href="{{ path('dashboard_logs', { file: filter.fileKey, level: filter.level, search: filter.search, preset: key }) }}">
+                    {{ label }}
+                </a>
+            {% endfor %}
+        </div>
+
+        <div class="log-list">
+            {% for log in logs %}
+                <article class="log-item log-level-{{ log.level|default('unknown') }}">
+                    <div class="log-meta">
+                        <span>{{ log.date ?: 'Date inconnue' }}</span>
+                        <strong>{{ log.level ?: 'unknown' }}</strong>
+                    </div>
+
+                    <pre>{{ log.message }}</pre>
+                </article>
+            {% else %}
+                <div class="empty-state">
+                    Aucun log trouvé.
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if totalPages > 1 %}
+            <div class="pagination">
+                {% if filter.page > 1 %}
+                    <a class="pagination-link"
+                       href="{{ path('dashboard_logs', {
+                           file: filter.fileKey,
+                           level: filter.level,
+                           search: filter.search,
+                           preset: filter.preset,
+                           page: filter.page - 1
+                       }) }}">
+                        Précédent
+                    </a>
+                {% endif %}
+
+                <span>Page {{ filter.page }} / {{ totalPages }}</span>
+
+                {% if filter.page < totalPages %}
+                    <a class="pagination-link"
+                       href="{{ path('dashboard_logs', {
+                           file: filter.fileKey,
+                           level: filter.level,
+                           search: filter.search,
+                           preset: filter.preset,
+                           page: filter.page + 1
+                       }) }}">
+                        Suivant
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}

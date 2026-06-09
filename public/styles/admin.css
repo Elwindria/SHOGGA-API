@@ -1,0 +1,262 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+:root {
+    --admin-blue: #151850;
+    --admin-bg: #f7f7f7;
+    --admin-white: #ffffff;
+    --admin-radius: 24px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    background: var(--admin-bg);
+    color: var(--admin-blue);
+}
+
+.login-page {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: var(--admin-bg);
+}
+
+.login-card {
+    width: 100%;
+    max-width: 440px;
+    padding: 40px;
+    border-radius: var(--admin-radius);
+    background: var(--admin-white);
+    box-shadow: 0 20px 60px rgba(21, 24, 80, 0.12);
+}
+
+.login-title {
+    margin: 0 0 8px;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.login-subtitle {
+    margin: 0 0 32px;
+    opacity: 0.7;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid rgba(21, 24, 80, 0.15);
+    border-radius: 16px;
+    font-family: inherit;
+    font-size: 15px;
+    outline: none;
+}
+
+.form-control:focus {
+    border-color: var(--admin-blue);
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 14px 18px;
+    border: 0;
+    border-radius: 16px;
+    background: var(--admin-blue);
+    color: #ffffff;
+    font-family: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.alert-error {
+    margin-bottom: 20px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: #ffe8e8;
+    color: #8a1f1f;
+    font-size: 14px;
+}
+
+.dashboard-layout {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    background: var(--admin-bg);
+}
+
+.dashboard-sidebar {
+    padding: 28px;
+    background: var(--admin-blue);
+    color: #ffffff;
+}
+
+.dashboard-brand {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 40px;
+}
+
+.dashboard-nav a {
+    display: block;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    border-radius: 16px;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.dashboard-nav a:hover,
+.dashboard-nav a.active {
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.dashboard-main {
+    padding: 32px;
+}
+
+.dashboard-card {
+    padding: 32px;
+    border-radius: var(--admin-radius);
+    background: #ffffff;
+    box-shadow: 0 20px 60px rgba(21, 24, 80, 0.08);
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.page-header h1 {
+    margin: 0 0 8px;
+    font-size: 32px;
+}
+
+.page-header p {
+    margin: 0;
+    opacity: 0.65;
+}
+
+.log-filters {
+    display: grid;
+    grid-template-columns: 180px 180px 1fr 140px;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.btn-fit {
+    width: auto;
+}
+
+.preset-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.preset-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: #f0f0f5;
+    color: #151850;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.preset-pill.active,
+.preset-pill:hover {
+    background: #151850;
+    color: #ffffff;
+}
+
+.log-list {
+    display: grid;
+    gap: 14px;
+}
+
+.log-item {
+    padding: 18px;
+    border-radius: 18px;
+    background: #f7f7f7;
+    border: 1px solid rgba(21, 24, 80, 0.08);
+}
+
+.log-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+.log-meta strong {
+    text-transform: uppercase;
+}
+
+.log-item pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: monospace;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.log-level-error {
+    border-color: rgba(190, 40, 40, 0.35);
+}
+
+.log-level-warning {
+    border-color: rgba(205, 139, 0, 0.35);
+}
+
+.log-level-info {
+    border-color: rgba(21, 24, 80, 0.12);
+}
+
+.empty-state {
+    padding: 32px;
+    border-radius: 18px;
+    background: #f7f7f7;
+    text-align: center;
+    font-weight: 700;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-top: 28px;
+}
+
+.pagination-link {
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: #151850;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 700;
+}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ asset('styles/security.css') }}">
+</head>
+<body>
+
+    <div class="login-card">
+
+        <img class="login-logo" src="https://shogga.com/wp-content/themes/yootheme/cache/33/Logo-Premium-noir-331da060.avif">
+
+        <p class="login-subtitle">
+            Connexion administrateur
+        </p>
+
+        {% if error %}
+            <div class="alert-error">
+                Identifiants invalides
+            </div>
+        {% endif %}
+
+        <form method="post">
+
+            <div class="form-group">
+                <label class="form-label">
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    name="_username"
+                    value="{{ last_username }}"
+                    class="form-control"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">
+                    Mot de passe
+                </label>
+
+                <input
+                    type="password"
+                    name="_password"
+                    class="form-control"
+                    required
+                >
+            </div>
+
+            <input
+                type="hidden"
+                name="_csrf_token"
+                value="{{ csrf_token('authenticate') }}"
+            >
+
+            <button class="btn-primary">
+                Se connecter
+            </button>
+
+        </form>
+
+    </div>
+
+</body>
+</html>
