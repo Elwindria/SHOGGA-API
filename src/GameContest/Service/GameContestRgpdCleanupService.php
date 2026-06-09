@@ -6,7 +6,7 @@ use App\Sellsy\Individual\SellsyIndividualService;
 use Psr\Log\LoggerInterface;
 use App\GameContest\Repository\GameContestEmailAttemptRepository;
 
-final class GameContestExpiredIndividualsCleaner
+final class GameContestRGPDCleanupService
 {
     public function __construct(
         private readonly SellsyIndividualService $sellsyIndividualService,
