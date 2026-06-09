@@ -37,4 +37,9 @@ final class GameContestExpiredIndividualsCleaner
 
         return $count;
     }
+
+    public function cleanEmailAttempt(): void
+    {
+        
+    }
 }
