@@ -35,25 +35,29 @@ final class SystemHealthProvider
 
     private function findLastMaintenanceDate(): ?string
     {
-        $path = $this->logsDir . '/prod.log';
+        $paths = glob($this->logsDir . '/prod*.log');
 
-        if (!is_file($path)) {
+        if ($paths === false || $paths === []) {
             return null;
         }
 
-        $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        usort($paths, static fn (string $a, string $b): int => filemtime($b) <=> filemtime($a));
 
-        if ($lines === false) {
-            return null;
-        }
+        foreach ($paths as $path) {
+            $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
-        foreach (array_reverse($lines) as $line) {
-            if (!str_contains($line, '[Maintenance] Daily maintenance completed')) {
+            if ($lines === false) {
                 continue;
             }
 
-            if (preg_match('/^\[(.*?)\]/', $line, $matches)) {
-                return $matches[1];
+            foreach (array_reverse($lines) as $line) {
+                if (!str_contains($line, '[Maintenance] Daily maintenance completed')) {
+                    continue;
+                }
+
+                if (preg_match('/^\[(.*?)\]/', $line, $matches)) {
+                    return $matches[1];
+                }
             }
         }
 
