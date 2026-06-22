@@ -7,12 +7,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 
 final class ApiRateLimiterSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private readonly RateLimiterFactory $apiGlobalLimiter,
+        private LoggerInterface $logger,
     ) {
     }
 
@@ -42,6 +44,14 @@ final class ApiRateLimiterSubscriber implements EventSubscriberInterface
 
         if ($limit->isAccepted()) {
             return;
+        } else {
+            $this->logger->warning(
+                '[RateLimiter] API limit exceeded',
+                [
+                    'ip' => $clientIp,
+                    'path' => $request->getPathInfo(),
+                ]
+            );
         }
 
         $event->setResponse(new JsonResponse([
