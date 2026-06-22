@@ -309,3 +309,9 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+.stat-value-small {
+    font-size: 18px;
+    line-height: 1.4;
+    word-break: break-word;
+}
