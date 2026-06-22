@@ -33,4 +33,29 @@
             </article>
         </div>
     </section>
+    <section class="dashboard-card">
+        <h2>Santé système</h2>
+
+        <div class="system-health-grid">
+            <div>
+                Application :
+                {{ systemHealth.applicationOk ? '✅' : '❌' }}
+            </div>
+
+            <div>
+                SQLite :
+                {{ systemHealth.databaseOk ? '✅' : '❌' }}
+            </div>
+
+            <div>
+                Logs :
+                {{ systemHealth.logsDirectoryOk ? '✅' : '❌' }}
+            </div>
+
+            <div>
+                Dernière maintenance :
+                {{ systemHealth.lastMaintenanceDate ?: 'Jamais exécutée' }}
+            </div>
+        </div>
+    </section>
 {% endblock %}
