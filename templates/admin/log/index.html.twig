@@ -16,7 +16,7 @@
             <select name="file" class="form-control" onchange="this.form.submit()">
                 {% for key, filename in files %}
                     <option value="{{ key }}" {{ filter.fileKey == key ? 'selected' : '' }}>
-                        {{ key == 'current' ? 'Actuel' : key }}
+                        {{ key == 'current' ? 'Actuel' : (key == 'all' ? 'Tous les logs' : key) }}
                     </option>
                 {% endfor %}
             </select>

@@ -30,32 +30,26 @@ final class LogReader
     {
         $files = [];
 
-        foreach (glob($this->logsDir . '/prod*.log') ?: [] as $path) {
+        foreach (glob($this->logsDir . '/prod-*.log') ?: [] as $path) {
             $filename = basename($path);
-
-            if ($filename === 'prod.log') {
-                $files[self::CURRENT_FILE_KEY] = 'prod.log';
-                continue;
-            }
 
             if (preg_match('/^prod-(\d{4}-\d{2}-\d{2})\.log$/', $filename, $matches)) {
                 $files[$matches[1]] = $filename;
             }
         }
 
-        uksort($files, function (string $a, string $b): int {
-            if ($a === self::CURRENT_FILE_KEY) {
-                return -1;
-            }
+        krsort($files);
 
-            if ($b === self::CURRENT_FILE_KEY) {
-                return 1;
-            }
+        if ($files !== []) {
+            $latestKey = array_key_first($files);
 
-            return strcmp($b, $a);
-        });
+            return [
+                'current' => $files[$latestKey],
+                'all' => 'Tous les logs',
+            ] + $files;
+        }
 
-        return $files;
+        return [];
     }
 
     /**
@@ -88,40 +82,68 @@ final class LogReader
      */
     private function readAllMatching(LogFilter $filter): array
     {
-        $path = $this->resolvePath($filter->fileKey);
+        $paths = $this->resolvePaths($filter->fileKey);
 
-        if ($path === null || !is_file($path)) {
+        if ($paths === []) {
             return [];
         }
 
-        $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        $entries = [];
 
-        if ($lines === false) {
-            return [];
+        foreach ($paths as $path) {
+            if (!is_file($path)) {
+                continue;
+            }
+
+            $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+            if ($lines === false) {
+                continue;
+            }
+
+            foreach ($lines as $line) {
+                $entry = $this->parseLine($line);
+
+                if ($this->matchFilters($entry, $filter)) {
+                    $entries[] = $entry;
+                }
+            }
         }
 
-        $lines = array_reverse(array_slice($lines, -5000));
+        $entries = array_reverse($entries);
 
-        $entries = array_map(
-            fn (string $line) => $this->parseLine($line),
-            $lines
-        );
-
-        return array_values(array_filter(
-            $entries,
-            fn (LogEntry $entry) => $this->matchFilters($entry, $filter)
-        ));
+        return array_slice($entries, 0, 5000);
     }
 
-    private function resolvePath(string $fileKey): ?string
+    private function resolvePaths(string $fileKey): array
     {
         $files = $this->getAvailableFiles();
 
-        if (!isset($files[$fileKey])) {
-            return null;
+        if ($fileKey === 'all') {
+            $paths = [];
+
+            foreach ($files as $key => $filename) {
+                if ($key === 'current' || $key === 'all') {
+                    continue;
+                }
+
+                $paths[] = $this->logsDir . '/' . $filename;
+            }
+
+            return $paths;
         }
 
-        return $this->logsDir . '/' . $files[$fileKey];
+        if (!isset($files[$fileKey])) {
+            return [];
+        }
+
+        if ($fileKey === 'all') {
+            return [];
+        }
+
+        return [
+            $this->logsDir . '/' . $files[$fileKey],
+        ];
     }
 
     private function parseLine(string $line): LogEntry
