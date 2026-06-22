@@ -4,7 +4,33 @@
 
 {% block body %}
     <section class="dashboard-card">
-        <h1>Dashboard</h1>
-        <p>Bienvenue dans l’espace d’administration SHOGGA.</p>
+        <div class="page-header">
+            <div>
+                <h1>Dashboard</h1>
+                <p>Vue globale de l’application SHOGGA.</p>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <article class="stat-card">
+                <span class="stat-label">Logs analysés</span>
+                <strong class="stat-value">{{ logStats.total }}</strong>
+            </article>
+
+            <article class="stat-card stat-card-error">
+                <span class="stat-label">Erreurs</span>
+                <strong class="stat-value">{{ logStats.errors }}</strong>
+            </article>
+
+            <article class="stat-card stat-card-warning">
+                <span class="stat-label">Warnings</span>
+                <strong class="stat-value">{{ logStats.warnings }}</strong>
+            </article>
+
+            <article class="stat-card">
+                <span class="stat-label">Infos</span>
+                <strong class="stat-value">{{ logStats.infos }}</strong>
+            </article>
+        </div>
     </section>
 {% endblock %}
