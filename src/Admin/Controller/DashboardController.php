@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use App\Admin\Dashboard\Service\SystemHealthProvider;
+use App\Admin\Dashboard\Service\RateLimiterStatsProvider;
 
 final class DashboardController extends AbstractController
 {
@@ -21,10 +22,12 @@ final class DashboardController extends AbstractController
     public function index(
         LogReader $logReader,
         SystemHealthProvider $systemHealthProvider,
+        RateLimiterStatsProvider $rateLimiterStatsProvider,
     ): Response {
         return $this->render('admin/dashboard/index.html.twig', [
             'logStats' => $logReader->getCurrentLogStats(),
             'systemHealth' => $systemHealthProvider->getHealth(),
+            'rateLimiterStats' => $rateLimiterStatsProvider->getStats(),
         ]);
     }
 }
