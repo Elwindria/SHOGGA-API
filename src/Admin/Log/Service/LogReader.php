@@ -14,6 +14,7 @@ final class LogReader
         'brevo' => 'Brevo',
         'game_contest' => 'GameContest',
         'import' => 'Import',
+        'rate_limiter' => 'RateLimiter',
     ];
 
     public function __construct(

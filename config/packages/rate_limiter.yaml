@@ -1,0 +1,7 @@
+# config/packages/rate_limiter.yaml
+framework:
+    rate_limiter:
+        api_global:
+            policy: 'fixed_window'
+            limit: 20
+            interval: '1 minute'
