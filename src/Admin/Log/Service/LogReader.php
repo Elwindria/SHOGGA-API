@@ -4,6 +4,7 @@ namespace App\Admin\Log\Service;
 
 use App\Admin\Log\DTO\LogEntry;
 use App\Admin\Log\DTO\LogFilter;
+use App\Admin\Dashboard\DTO\LogStats;
 
 final class LogReader
 {
@@ -156,5 +157,39 @@ final class LogReader
         }
 
         return true;
+    }
+
+    public function getCurrentLogStats(): LogStats
+    {
+        $filter = new LogFilter(
+            fileKey: self::CURRENT_FILE_KEY,
+            level: null,
+            search: null,
+            preset: null,
+            page: 1,
+            limit: 5000,
+        );
+
+        $entries = $this->read($filter);
+
+        $errors = 0;
+        $warnings = 0;
+        $infos = 0;
+
+        foreach ($entries as $entry) {
+            match ($entry->level) {
+                'error', 'critical', 'alert', 'emergency' => $errors++,
+                'warning' => $warnings++,
+                'info' => $infos++,
+                default => null,
+            };
+        }
+
+        return new LogStats(
+            total: count($entries),
+            errors: $errors,
+            warnings: $warnings,
+            infos: $infos,
+        );
     }
 }

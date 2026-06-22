@@ -50,3 +50,11 @@ services:
     App\Admin\Log\Service\LogReader:
         arguments:
             $logsDir: '%kernel.logs_dir%'
+
+    App\Admin\Dashboard\Service\SystemHealthProvider:
+        arguments:
+            $logsDir: '%kernel.logs_dir%'
+
+    App\Admin\Dashboard\Service\RateLimiterStatsProvider:
+        arguments:
+            $logsDir: '%kernel.logs_dir%'
