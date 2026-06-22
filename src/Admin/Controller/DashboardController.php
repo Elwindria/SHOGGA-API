@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controller;
 
+use App\Admin\Log\Service\LogReader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -16,8 +17,10 @@ final class DashboardController extends AbstractController
     }
 
     #[Route('/dashboard', name: 'dashboard_home', methods: ['GET'])]
-    public function index(): Response
+    public function index(LogReader $logReader): Response
     {
-        return $this->render('admin/dashboard/index.html.twig');
+        return $this->render('admin/dashboard/index.html.twig', [
+            'logStats' => $logReader->getCurrentLogStats(),
+        ]);
     }
 }
